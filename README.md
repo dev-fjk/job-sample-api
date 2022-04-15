@@ -9,7 +9,7 @@
 
 機能毎にtaskブランチからfeatureブランチへ Pull Requestを発行していく  
 
-※今後も必要になるかもしれないのでfeatureからmasterマージはしないでください
+※今後も必要になるかもしれないのでfeatureからmasterマージはしないでください(ガード済)
 
 ## 事前準備
 
