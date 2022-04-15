@@ -4,9 +4,10 @@
 
 ## ブランチ運用
 
-- developブランチから勉強用のブランチを用意する
-    - ブランチ名の例 : task/dev-fjk
-    - レビューしてほしい場合は上記の勉強用のブランチから developブランチへ Pull Requestを発行する
+1. masterブランチからfeature/自身のユーザー名 という命名でブランチを作成する(例: feature/dev-fjk)
+1. 上記のfeatureブランチから task/ユーザー名/機能名 という命名でブランチを作成する(例: task/dev-fjk/get-resume)
+
+機能毎にtaskブランチからfeatureブランチへ Pull Requestを発行していく
 
 ## 事前準備
 
