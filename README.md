@@ -7,7 +7,9 @@
 1. masterブランチからfeature/自身のユーザー名 という命名でブランチを作成する(例: feature/dev-fjk)
 1. 上記のfeatureブランチから task/ユーザー名/機能名 という命名でブランチを作成する(例: task/dev-fjk/get-resume)
 
-機能毎にtaskブランチからfeatureブランチへ Pull Requestを発行していく
+機能毎にtaskブランチからfeatureブランチへ Pull Requestを発行していく  
+
+※今後も必要になるかもしれないのでfeatureからmasterマージはしないでください
 
 ## 事前準備
 
