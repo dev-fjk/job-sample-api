@@ -6,7 +6,6 @@
 
 1. masterブランチからfeature/自身のユーザー名 という命名でブランチを作成する(例: feature/dev-fjk)
 1. 上記のfeatureブランチから task/ユーザー名/機能名 という命名でブランチを作成する(例: task/dev-fjk/get-resume)
-    1. 機能単位でtaskブランチを切るイメージです。  
 
 レビュー必要な場合 taskブランチからfeatureブランチへ向けてPull Requestを作成し Reviewerに dev-fjkを設定してください。
 
@@ -53,6 +52,7 @@ spring.profiles.activeの値を使用したいDBに合わせて設定
 
 - resources/h2/init.sql(h2)
 - docker/mysql/initdb.d/1_schema.sql(MySQL)
+
 
 ## エンドポイント
 
