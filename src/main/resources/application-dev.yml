@@ -1,0 +1,23 @@
+---
+spring:
+  # Localの適当に用意したPostgreSQLに接続
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: postgres
+
+logging:
+  level:
+    root: info
+    web: debug
+    org.seasar.doma.jdbc.UtilLoggingJdbcLogger: debug
+    org.springframework.jdbc.datasource.init: debug
+
+extension:
+  hash:
+    salt: salt
+  token:
+    subject: subject
+    tokenKey: op5hhr4ysc7ymbxi7mixp604qp9fu651szr4n24wkc9x3ng26xccd1f1xz8ltokenkey
+

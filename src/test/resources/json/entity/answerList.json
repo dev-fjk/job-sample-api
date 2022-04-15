@@ -1,0 +1,24 @@
+[
+  {
+    "quizId": 1,
+    "answerId": 11,
+    "answer1": "にゃっはろー",
+    "answer2": "こんこんきーつね",
+    "answer3": "こんやっぴー",
+    "answer4": "ゆびゆびー",
+    "correctNumber": 1,
+    "createdAt": "2021-12-31T22:57:51",
+    "updatedAt": "2021-12-31T22:57:51"
+  },
+  {
+    "quizId": 2,
+    "answerId": 12,
+    "answer1": "回答1",
+    "answer2": "回答2",
+    "answer3": "回答3",
+    "answer4": "回答4",
+    "correctNumber": 2,
+    "createdAt": "2021-12-31T22:57:51",
+    "updatedAt": "2021-12-31T22:57:51"
+  }
+]

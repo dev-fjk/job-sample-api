@@ -1,0 +1,48 @@
+---
+spring:
+  application:
+    name: miko-quiz-api
+  messages:
+    encoding: UTF-8
+  jackson:
+    time-zone: "Asia/Tokyo"
+
+logging:
+  level:
+    root: info
+
+doma:
+  dialect: postgres
+  naming: snake_lower_case
+
+extension:
+  hash:
+    # パスワードハッシュ化の際に使用する文字列
+    salt: ${salt}
+  token:
+    # JWTの解析結果として返却される値
+    # 今回は管理者1ユーザーしか使用しないため固定値
+    subject: ${subject}
+    # JsonWebTokenのキーに使用する値
+    tokenKey: ${tokenKey}
+
+# spring-doc(swagger) の設定
+# https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: false
+    tags-sorter: method
+    defaultModelRendering: example
+    doc-expansion: list
+    config-url: /v3/api-docs/swagger-config
+    url: /v3/api-docs
+
+---
+# -Dspring.profiles.activeを指定しなかった場合に実行される application.ymlの指定
+spring:
+  profiles:
+    default: local

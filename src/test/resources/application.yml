@@ -1,0 +1,30 @@
+---
+spring:
+  application:
+    name: miko-quiz-api
+  messages:
+    encoding: UTF-8
+  jackson:
+    time-zone: "Asia/Tokyo"
+
+logging:
+  level:
+    root: info
+    web: debug
+    org.seasar.doma.jdbc.UtilLoggingJdbcLogger: debug
+    org.springframework.jdbc.datasource.init: debug
+
+doma:
+  dialect: h2
+
+extension:
+  hash:
+    salt: salt
+  token:
+    subject: subject
+    tokenKey: token
+
+---
+spring:
+  profiles:
+    default: test

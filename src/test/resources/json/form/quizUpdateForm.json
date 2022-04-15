@@ -1,0 +1,18 @@
+{
+  "quizList": [
+    {
+      "quizId": 10,
+      "question": "さくらみこの挨拶といえば？",
+      "commentary": "さくらみこの挨拶はにゃっはろー",
+      "quizStatus": "1",
+      "answer": {
+        "answerId": 101,
+        "answer1": "にゃっはろー",
+        "answer2": "こんこんきーつね",
+        "answer3": "こんやっぴー",
+        "answer4": "ゆびゆびー",
+        "correctNumber": 1
+      }
+    }
+  ]
+}
