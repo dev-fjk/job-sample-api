@@ -53,6 +53,14 @@ spring.profiles.activeの値を使用したいDBに合わせて設定
 - resources/h2/init.sql(h2)
 - docker/mysql/initdb.d/1_schema.sql(MySQL)
 
+### プラグイン設定
+OR Mapperとして Searar Domaを使用するため以下のプラグインを導入することを推奨します。
+
+- Eclipse
+    - http://doma.seasar.org/extension/doma_tools.html
+- IntelliJ
+    - https://plugins.jetbrains.com/plugin/7615-doma-support
+
 
 ## エンドポイント
 
