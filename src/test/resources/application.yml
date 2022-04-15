@@ -1,7 +1,7 @@
 ---
 spring:
   application:
-    name: miko-quiz-api
+    name: job-sample-api
   messages:
     encoding: UTF-8
   jackson:
@@ -16,13 +16,6 @@ logging:
 
 doma:
   dialect: h2
-
-extension:
-  hash:
-    salt: salt
-  token:
-    subject: subject
-    tokenKey: token
 
 ---
 spring:

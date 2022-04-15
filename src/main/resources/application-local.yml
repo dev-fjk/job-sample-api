@@ -1,24 +1,10 @@
 ---
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:default;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
-    username: sa
-    password:
-  sql:
-    init:
-      mode: embedded
-      schema-locations:
-        - classpath:db/ddl/admin_account.sql
-        - classpath:db/ddl/quiz.sql
-        - classpath:db/ddl/answer.sql
-      data-locations:
-        - classpath:db/dml/admin_account-data.sql
-        - classpath:db/dml/quiz-data.sql
-        - classpath:db/dml/answer-data.sql
-  h2:
-    console:
-      enabled: true
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3314/job_db
+    username: user
+    password: password
 
 logging:
   level:
@@ -27,12 +13,3 @@ logging:
     org.seasar.doma.jdbc.UtilLoggingJdbcLogger: debug
     org.springframework.jdbc.datasource.init: debug
 
-doma:
-  dialect: h2
-
-extension:
-  hash:
-    salt: salt
-  token:
-    subject: subject
-    tokenKey: op5hhr4ysc7ymbxi7mixp604qp9fu651szr4n24wkc9x3ng26xccd1f1xz8ltokenkey

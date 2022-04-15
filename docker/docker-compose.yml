@@ -1,11 +1,12 @@
-version: '3.3'
+version: '3'
 services:
   db:
     build: mysql
-    image: demo-db:0.0.1
+    image: job-db:0.0.1
     restart: always
+    container_name: job-db
     environment:
-      MYSQL_DATABASE: demo_db
+      MYSQL_DATABASE: job_db
       MYSQL_USER: user
       MYSQL_PASSWORD: password
       MYSQL_ROOT_PASSWORD: rootpassword
