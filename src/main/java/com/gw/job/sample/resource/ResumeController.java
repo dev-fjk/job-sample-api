@@ -1,7 +1,9 @@
 package com.gw.job.sample.resource;
 
 import com.gw.job.sample.config.OpenApiConstant;
-import com.gw.job.sample.entity.request.ResumeAddRequest;
+import com.gw.job.sample.entity.request.ResumeListQueryParameter;
+import com.gw.job.sample.entity.response.PostedResumeListResponse;
+import com.gw.job.sample.entity.response.ResumeResponse;
 import com.gw.job.sample.service.interfaces.ResumeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,10 +13,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,18 +34,35 @@ public class ResumeController {
 
     private final ResumeService resumeService;
 
-    @PostMapping
+    @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "管理者用ページへ遷移するためのログイン処理を行う")
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            content = @Content(schema = @Schema(implementation = ResumeAddRequest.class))
-    )
+    @Operation(summary = "レジュメ情報を取得する")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "ログインに成功した", content = @Content),
+            @ApiResponse(responseCode = "200", description = "レジュメ取得結果 取得失敗時は空のJson Bodyを返す", content = @Content(
+                    schema = @Schema(implementation = ResumeResponse.class),
+                    mediaType = MediaType.APPLICATION_JSON_VALUE
+            )),
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> isLogin(@Validated @RequestBody ResumeAddRequest loginForm) {
+    public ResponseEntity<?> getUserResume(@PathVariable("userId") long userId) {
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/companies/{cid}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "企業へ応募中のレジュメ一覧を取得する")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "レジュメ一覧取得結果", content = @Content(
+                    schema = @Schema(implementation = PostedResumeListResponse.class),
+                    mediaType = MediaType.APPLICATION_JSON_VALUE
+            )),
+            @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
+            @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
+            @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
+    })
+    public ResponseEntity<?> getPostedUserResumeList(
+            @PathVariable("cid") long cid, @ModelAttribute ResumeListQueryParameter parameters) {
         return ResponseEntity.ok().build();
     }
 }
