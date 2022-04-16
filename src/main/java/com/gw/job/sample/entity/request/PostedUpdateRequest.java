@@ -18,8 +18,10 @@ public class PostedUpdateRequest {
     @Schema(description = "応募中のレジュメ")
     public static class PostedUserResume {
 
+        @Schema(description = "ユーザーID", example = "1")
         private long userId;
 
+        @Schema(description = "選考状況ID 0:採用前,1:選考中,2:採用,9:不採用", example = "1")
         @SelectionStatusConstraint
         private SelectionStatus selectionStatus;
     }

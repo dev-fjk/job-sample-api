@@ -23,17 +23,17 @@ public class ResumeListQueryParameter {
 
     private static final String ALL = "*";
 
-    @Parameter(description = "取得開始位置", example = "1")
+    @Parameter(description = "取得開始位置 1以上の値を設定 デフォルト: 1", example = "1")
     private int start = 1;
 
-    @Parameter(description = "取得件数", example = "20")
+    @Parameter(description = "取得件数 0~100の範囲で値を設定 デフォルト: 20", example = "20")
     private int count = 20;
 
     @Parameter(description = "ユーザーIDリスト カンマ区切りで複数指定可能 デフォルト:空",
             schema = @Schema(type = "list", format = "int64"))
     private Set<Long> userIdList = Collections.emptySet();
 
-    @Parameter(description = "選考状況 カンマ区切りの文字列か *を設定 0:採用前,1:選考中,2:採用,9:不採用, *:全指定 デフォルト: *")
+    @Parameter(description = "選考状況 カンマ区切りの数値か *を設定 0:採用前,1:選考中,2:採用,9:不採用, *:全指定 デフォルト: *")
     private String selectionStatus = ALL;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

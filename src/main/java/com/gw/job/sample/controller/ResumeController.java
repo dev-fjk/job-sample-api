@@ -27,11 +27,15 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+/**
+ * レジュメ情報の操作を行うコントローラー
+ */
 @Slf4j
 @Validated
 @RestController
@@ -92,7 +96,7 @@ public class ResumeController {
             @ApiResponse(responseCode = "409", ref = OpenApiConstant.CONFLICT),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> addResume(@PathVariable("userId") long userId, ResumeAddRequest request) {
+    public ResponseEntity<?> addResume(@PathVariable("userId") long userId, @RequestBody ResumeAddRequest request) {
         return ResponseEntity.created(UriComponentsBuilder.newInstance().path(RESUME_LOCATION_URI)
                 .buildAndExpand(Map.of("userId", userId)).toUri()).build();
     }
@@ -113,7 +117,7 @@ public class ResumeController {
             @ApiResponse(responseCode = "409", ref = OpenApiConstant.CONFLICT),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> updateResume(@PathVariable("userId") long userId, ResumeAddRequest request) {
+    public ResponseEntity<?> updateResume(@PathVariable("userId") long userId, @RequestBody ResumeUpdateRequest request) {
         return ResponseEntity.ok().build();
     }
 
