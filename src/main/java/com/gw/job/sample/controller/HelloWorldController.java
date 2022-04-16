@@ -1,4 +1,4 @@
-package com.gw.job.sample.resource;
+package com.gw.job.sample.controller;
 
 import org.springframework.stereotype.Controller;
 

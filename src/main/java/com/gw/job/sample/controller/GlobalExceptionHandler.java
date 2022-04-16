@@ -1,11 +1,10 @@
-package com.gw.job.sample.resource;
+package com.gw.job.sample.controller;
 
 import com.gw.job.sample.exception.RepositoryControlException;
 import com.gw.job.sample.exception.ResourceNotFoundException;
 import com.gw.job.sample.exception.ValidationException;
 import com.gw.job.sample.converter.ProblemConverter;
 import com.gw.job.sample.entity.response.ProblemResponse;
-import java.nio.file.AccessDeniedException;
 import javax.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -87,6 +86,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ProblemResponse> handleRuntimeException(RuntimeException exception) {
+        exception.printStackTrace();
         return this.errorResponses(HttpStatus.INTERNAL_SERVER_ERROR, problemConverter.convert(exception));
     }
 

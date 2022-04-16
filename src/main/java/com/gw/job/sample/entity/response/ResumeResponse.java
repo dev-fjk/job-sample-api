@@ -16,7 +16,7 @@ public class ResumeResponse {
     @Schema(description = "名前", example = "名前")
     private String firstName;
 
-    @Schema(description = "生年月日 yyyy-MM-ddの形式")
+    @Schema(description = "生年月日 yyyy-MM-ddの形式", example = "1990-10-10")
     private String birthDate;
 
     @Schema(description = "職務要約", example = "プログラマーとして働いていました。")

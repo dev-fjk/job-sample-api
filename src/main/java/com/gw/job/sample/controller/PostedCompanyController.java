@@ -1,8 +1,7 @@
-package com.gw.job.sample.resource;
+package com.gw.job.sample.controller;
 
 import com.gw.job.sample.config.OpenApiConstant;
 import com.gw.job.sample.entity.request.ResumeAddRequest;
-import com.gw.job.sample.service.interfaces.ResumeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

@@ -1,4 +1,4 @@
-package com.gw.job.sample.resource;
+package com.gw.job.sample.controller;
 
 import com.gw.job.sample.config.OpenApiConstant;
 import com.gw.job.sample.entity.request.ResumeListQueryParameter;
@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @Validated
 @RestController
 @RequestMapping(path = ResumeController.BASE_PATH)
@@ -46,6 +48,7 @@ public class ResumeController {
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
     public ResponseEntity<?> getUserResume(@PathVariable("userId") long userId) {
+        log.info("request: {}", userId);
         return ResponseEntity.ok().build();
     }
 
@@ -62,7 +65,8 @@ public class ResumeController {
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
     public ResponseEntity<?> getPostedUserResumeList(
-            @PathVariable("cid") long cid, @ModelAttribute ResumeListQueryParameter parameters) {
+            @PathVariable("cid") long cid, @Validated @ModelAttribute ResumeListQueryParameter parameters) {
+        log.info("request: {} {}", cid, parameters);
         return ResponseEntity.ok().build();
     }
 }

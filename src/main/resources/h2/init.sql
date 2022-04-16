@@ -32,6 +32,7 @@ CREATE TABLE posted_company
     user_id     bigint      not null comment 'ユーザーID',
     cid         bigint      not null comment '企業ID',
     posted_date timestamp   not null default current_timestamp comment '応募日時',
+    selection_status tinyint(1)  not null default 0 comment '選考状況 0: 選考前, 1: 選考中, 2: 採用, 9: 不採用',
     created_at  timestamp   not null default current_timestamp comment '作成日時',
     created_by  varchar(30) not null comment '作成者',
     updated_at  timestamp   not null default current_timestamp comment '更新日時',
@@ -40,3 +41,5 @@ CREATE TABLE posted_company
     FOREIGN KEY (user_id) REFERENCES resume (user_id),
     FOREIGN KEY (cid) REFERENCES mst_company (cid)
 );
+
+create index idx_posted_company_selection_status on posted_company(selection_status);
