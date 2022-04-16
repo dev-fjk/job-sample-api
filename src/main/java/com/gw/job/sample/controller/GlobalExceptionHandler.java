@@ -1,6 +1,7 @@
 package com.gw.job.sample.controller;
 
 import com.gw.job.sample.exception.RepositoryControlException;
+import com.gw.job.sample.exception.ResourceAlreadyExistException;
 import com.gw.job.sample.exception.ResourceNotFoundException;
 import com.gw.job.sample.exception.ValidationException;
 import com.gw.job.sample.converter.ProblemConverter;
@@ -65,6 +66,17 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ProblemResponse> handleResourceNotFoundException(ResourceNotFoundException exception) {
         return this.errorResponses(HttpStatus.NOT_FOUND, problemConverter.convert(exception));
+    }
+
+    /**
+     * リソースが既に存在する場合のエラー
+     *
+     * @param exception {@link ResourceAlreadyExistException}
+     * @return エラーレスポンス
+     */
+    @ExceptionHandler(ResourceAlreadyExistException.class)
+    public ResponseEntity<ProblemResponse> handleResourceNotFoundException(ResourceAlreadyExistException exception) {
+        return this.errorResponses(HttpStatus.CONFLICT, problemConverter.convert(exception));
     }
 
     /**

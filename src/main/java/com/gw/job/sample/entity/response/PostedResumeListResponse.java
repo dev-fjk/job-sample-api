@@ -20,7 +20,7 @@ public class PostedResumeListResponse {
     /**
      * レジュメ一覧
      */
-    private List<PostedResume> resumeList;
+    private List<PostedResume> resumes;
 
     @Data
     @Schema(description = "企業に応募しているレジュメ")

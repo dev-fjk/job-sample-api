@@ -2,6 +2,7 @@ package com.gw.job.sample.converter;
 
 import com.gw.job.sample.entity.response.ProblemResponse;
 import com.gw.job.sample.exception.RepositoryControlException;
+import com.gw.job.sample.exception.ResourceAlreadyExistException;
 import com.gw.job.sample.exception.ResourceNotFoundException;
 import com.gw.job.sample.exception.ValidationException;
 import java.util.List;
@@ -73,6 +74,17 @@ public class ProblemConverter {
         return ProblemResponse.builder()
                 .title("リクエストされたリソースは見つかりませんでした")
                 .status(HttpStatus.NOT_FOUND.value())
+                .detail(exception.getMessage())
+                .build();
+    }
+
+    /**
+     * 409エラーを返す
+     */
+    public ProblemResponse convert(ResourceAlreadyExistException exception) {
+        return ProblemResponse.builder()
+                .title("リソースが既に存在しています")
+                .status(HttpStatus.CONFLICT.value())
                 .detail(exception.getMessage())
                 .build();
     }
