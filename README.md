@@ -16,7 +16,8 @@
 - [git hub pages](https://y-gw-study.github.io/job-sample-api/)
 - [ローカル(ビルドが必要)](http://localhost:8080/swagger-ui/index.html)
 
-ローカルのSwagger上からAPIへリクエストを飛ばすことが可能です
+ローカルのSwagger上からAPIへリクエストを飛ばすことが可能です<br>
+※git hub pages上だと 日付系のパラメータが上手く表示されない事象あり
 
 ### API仕様書の更新方法
 
