@@ -2,6 +2,7 @@ package com.gw.job.sample.converter;
 
 import com.gw.job.sample.entity.response.ProblemResponse;
 import com.gw.job.sample.exception.RepositoryControlException;
+import com.gw.job.sample.exception.ResourceAlreadyExistException;
 import com.gw.job.sample.exception.ResourceNotFoundException;
 import com.gw.job.sample.exception.ValidationException;
 import java.util.List;
@@ -78,6 +79,17 @@ public class ProblemConverter {
     }
 
     /**
+     * 409エラーを返す
+     */
+    public ProblemResponse convert(ResourceAlreadyExistException exception) {
+        return ProblemResponse.builder()
+                .title("リソースが既に存在しています")
+                .status(HttpStatus.CONFLICT.value())
+                .detail(exception.getMessage())
+                .build();
+    }
+
+    /**
      * データ更新時のエラーを返す
      *
      * @param exception {@link RepositoryControlException}
@@ -113,7 +125,7 @@ public class ProblemConverter {
      */
     private String detail(List<FieldError> errors) {
         return errors.stream()
-                .map(error -> error.getField() + " は " + error.getDefaultMessage() + ": " + error.getRejectedValue())
+                .map(error -> error.getField() + " は " + error.getDefaultMessage())
                 .collect(Collectors.joining(", "));
     }
 
@@ -125,7 +137,7 @@ public class ProblemConverter {
      */
     private String detail(Set<ConstraintViolation<?>> violations) {
         return violations.stream()
-                .map(v -> v.getPropertyPath() + " は " + v.getMessage() + ": " + v.getInvalidValue())
+                .map(v -> v.getPropertyPath() + " は " + v.getMessage())
                 .collect(Collectors.joining(", "));
     }
 }

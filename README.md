@@ -2,6 +2,41 @@
 
 求人PJ 事前学習用API
 
+## エンドポイント
+
+各エンドポイントの詳細IF仕様は後述のSwaggerを参照
+
+| uri | Controller | 説明   |
+|----  |----   | ---   |
+| resume/v1/  | ResumeController  | 職務経歴情報の操作を行う  |
+| posted-company/v1/  | PostedCompanyController  | 企業への応募関連の操作を行う  |
+
+## API仕様書(Swagger)
+
+- [git hub pages](https://dev-fjk.github.io/job-sample-api/)
+- [ローカル(ビルドが必要)](http://localhost:8080/swagger-ui/index.html)
+
+ローカルのSwagger上からAPIへリクエストを飛ばすことが可能です
+
+### API仕様書の更新方法
+
+~~~
+(1) ローカルでアプリケーションを起動しSwaggerのリンクを開く
+(2) 検索欄に『/v3/api-docs.yaml』 と入力して検索する
+(3) 左上の/v3/api-docs.yamlというリンクを押下すると api-docs.yamlがダウンロードされるので 
+元々置いてある docs/specs/api-doc.yamlと差し替える
+
+※ masterブランチのapi-docs.ymlの記載内容が反映されるので他のブランチで差し替えてもmasterにマージするまで反映されない
+※ git hub actionsを入れた後はmasterマージ時に自動で最新化されるようにしたい
+~~~
+
+## DB定義
+
+以下に配置しているSQLを直接参照してください
+
+- resources/h2/init.sql(h2)
+- docker/mysql/initdb.d/1_schema.sql(MySQL)
+
 ## ブランチ運用
 
 1. masterブランチからfeature/自身のユーザー名 という命名でブランチを作成する(例: feature/dev-fjk)
@@ -9,7 +44,7 @@
 
 レビュー必要な場合 taskブランチからfeatureブランチへ向けてPull Requestを作成し Reviewerに dev-fjkを設定してください。
 
-## 事前準備
+# ローカルでの開発設定
 
 以下のツールを準備してください
 
@@ -22,7 +57,7 @@
 練習も兼ねてIntellij Ultimate Editionの使用を推奨します<br>
 1ヶ月は無料 & JDKやmavenはIDE上からインストール可能であるため環境構築が楽です
 
-### MySQLの準備(任意)
+## MySQLの準備(任意)
 
 Dockerを使用する場合
 
@@ -45,14 +80,7 @@ spring.profiles.activeの値を使用したいDBに合わせて設定
     - localプロファイル(デフォルト)
 - h2使用時
     - h2プロファイル
-
-## DB定義
-
-以下に配置しているSQLを直接参照してください
-
-- resources/h2/init.sql(h2)
-- docker/mysql/initdb.d/1_schema.sql(MySQL)
-
+    
 ### プラグイン設定
 OR Mapperとして Searar Domaを使用するため以下のプラグインを導入することを推奨します。
 
@@ -60,23 +88,7 @@ OR Mapperとして Searar Domaを使用するため以下のプラグインを�
     - http://doma.seasar.org/extension/doma_tools.html
 - IntelliJ
     - https://plugins.jetbrains.com/plugin/7615-doma-support
-
-
-## エンドポイント
-
-各エンドポイントの詳細IF仕様は後述のSwaggerを参照
-
-| uri | Controller | 説明   |
-|----  |----   | ---   |
-| resume/v1/  | ResumeController  | 職務経歴情報の操作を行う  |
-| posted-company/v1/  | PostedCompanyController  | 企業への応募関連の操作を行う  |
-
-## API仕様書(Swagger)
-
-- [ローカル(ビルドが必要)](http://localhost:8080/swagger-ui/index.html)
-
-ローカルのSwagger上からAPIへリクエストを飛ばすことが可能です
-
+    
 ## 参考用サイト
 
 - [Springのレイヤーアーキテクチャ](http://terasolunaorg.github.io/guideline/public_review/Overview/ApplicationLayering.html)

@@ -11,6 +11,7 @@ public class OpenApiConstant {
     public static final String UNAUTHORIZED = "unauthorized";
     public static final String FORBIDDEN = "forbidden";
     public static final String NOT_FOUND = "notFound";
+    public static final String CONFLICT = "conflict";
     public static final String INTERNAL_SERVER_ERROR = "internalServerError";
     public static final String INSERTED_SUCCESS = "insertedSuccessfully";
     public static final String UPDATED_SUCCESS = "updatedSuccessfully";

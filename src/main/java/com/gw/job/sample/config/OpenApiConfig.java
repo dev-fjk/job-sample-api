@@ -56,7 +56,7 @@ public class OpenApiConfig {
         var badRequestContent = problemContent(objectMapper, ProblemResponse.builder()
                 .title("リクエストされたパラメータは正しくありません")
                 .status(HttpStatus.BAD_REQUEST.value())
-                .detail("questionは必須項目です")
+                .detail("userIdは必須項目です")
                 .build()
         );
         var unauthorizedContent = problemContent(objectMapper, ProblemResponse.builder()
@@ -74,7 +74,13 @@ public class OpenApiConfig {
         var notFound = problemContent(objectMapper, ProblemResponse.builder()
                 .title("リクエストされたリソースは見つかりませんでした")
                 .status(HttpStatus.NOT_FOUND.value())
-                .detail("クイズが見つかりませんでした")
+                .detail("レジュメが見つかりませんでした")
+                .build()
+        );
+        var conflict = problemContent(objectMapper, ProblemResponse.builder()
+                .title("リソースが既に存在します")
+                .status(HttpStatus.CONFLICT.value())
+                .detail("既にレジュメが登録されています")
                 .build()
         );
         var internalServerErrorContent = problemContent(objectMapper, ProblemResponse.builder()
@@ -92,6 +98,8 @@ public class OpenApiConfig {
                         .description("許可されていないアクセス").content(forbiddenContent))
                 .addResponses(OpenApiConstant.NOT_FOUND, new ApiResponse()
                         .description("リソースが見つからない").content(notFound))
+                .addResponses(OpenApiConstant.CONFLICT, new ApiResponse()
+                        .description("リソースが既に存在する").content(conflict))
                 .addResponses(OpenApiConstant.INTERNAL_SERVER_ERROR, new ApiResponse()
                         .description("処理が正常に終了しなかった").content(internalServerErrorContent))
                 .addResponses(OpenApiConstant.INSERTED_SUCCESS, new ApiResponse()
