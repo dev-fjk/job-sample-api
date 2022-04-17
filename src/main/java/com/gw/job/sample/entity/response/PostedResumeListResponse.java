@@ -27,7 +27,7 @@ public class PostedResumeListResponse {
     public static class PostedResume {
 
         @Schema(description = "ユーザーID", example = "1")
-        private long userID;
+        private long userId;
 
         @Schema(description = "苗字", example = "苗字")
         private String lastName;
