@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Map;
+import javax.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -68,7 +69,7 @@ public class ResumeController {
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> getResume(@PathVariable("userId") long userId) {
+    public ResponseEntity<?> getResume(@PathVariable("userId") @Min(1) long userId) {
         var resumeResultOpt = resumeService.fetchUserResume(userId);
         return resumeResultOpt.isPresent()
                 ? ResponseEntity.ok(responseConverter.convertResumeResponse(resumeResultOpt.get()))

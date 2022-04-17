@@ -28,6 +28,10 @@ public class DateFormatterUtil {
      * @return yISO8601拡張形式の日付
      */
     public static LocalDate isoStringDateToLocalDate(String src) {
-        return LocalDate.parse(src, DateTimeFormatter.ISO_DATE);
+        try {
+            return LocalDate.parse(src, DateTimeFormatter.ISO_DATE);
+        } catch (Exception exception) {
+            throw new IllegalArgumentException("日付の変換に失敗しました");
+        }
     }
 }
