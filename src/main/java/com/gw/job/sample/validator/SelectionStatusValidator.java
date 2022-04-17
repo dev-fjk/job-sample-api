@@ -16,10 +16,6 @@ public class SelectionStatusValidator implements ConstraintValidator<SelectionSt
      */
     @Override
     public boolean isValid(SelectionStatus value, ConstraintValidatorContext context) {
-        try {
-            return value != null;
-        } catch (Exception exception) {
-            return false;
-        }
+        return SelectionStatus.INVALID != value;
     }
 }

@@ -1,5 +1,6 @@
 package com.gw.job.sample.annotations;
 
+import com.gw.job.sample.entity.enums.SelectionStatus;
 import com.gw.job.sample.validator.SelectionStatusValidator;
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

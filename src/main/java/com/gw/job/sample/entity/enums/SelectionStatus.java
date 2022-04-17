@@ -20,7 +20,8 @@ public enum SelectionStatus {
     BEFORE("0", "選考前"),
     NOW("1", "選考中"),
     RECRUITMENT("2", "採用"),
-    NOT_RECRUITMENT("9", "不採用");
+    NOT_RECRUITMENT("9", "不採用"),
+    INVALID("Invalid", "不正な値");
 
     /**
      * 選考状況を表す数字
@@ -54,10 +55,9 @@ public enum SelectionStatus {
      */
     @JsonCreator
     public static SelectionStatus map(String value) {
-        return Stream.of(values())
+        return value == null ? null : Stream.of(values())
                 .filter(v -> v.getValue().equals(value))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("selection status is invalid value"));
+                .findFirst().orElse(SelectionStatus.INVALID);
     }
 
     /**

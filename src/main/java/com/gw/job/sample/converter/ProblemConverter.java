@@ -125,7 +125,7 @@ public class ProblemConverter {
      */
     private String detail(List<FieldError> errors) {
         return errors.stream()
-                .map(error -> error.getField() + " は " + error.getDefaultMessage() + ": " + error.getRejectedValue())
+                .map(error -> error.getField() + " は " + error.getDefaultMessage())
                 .collect(Collectors.joining(", "));
     }
 
@@ -137,7 +137,7 @@ public class ProblemConverter {
      */
     private String detail(Set<ConstraintViolation<?>> violations) {
         return violations.stream()
-                .map(v -> v.getPropertyPath() + " は " + v.getMessage() + ": " + v.getInvalidValue())
+                .map(v -> v.getPropertyPath() + " は " + v.getMessage())
                 .collect(Collectors.joining(", "));
     }
 }
