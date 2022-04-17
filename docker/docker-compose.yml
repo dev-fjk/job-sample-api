@@ -5,6 +5,7 @@ services:
     image: job-db:0.0.1
     restart: always
     container_name: job-db
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
     environment:
       MYSQL_DATABASE: job_db
       MYSQL_USER: user
@@ -15,7 +16,7 @@ services:
       - "3314:3306"
     volumes:
       - ./mysql/initdb.d:/docker-entrypoint-initdb.d
-      - ./mysql/conf.d:/etc/mysql/conf.d
+      - ./mysql/conf.d:/etc/mysql/conf.d/my.cnf
 
 volumes:
   mysql-db:
