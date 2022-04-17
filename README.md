@@ -89,6 +89,19 @@ OR Mapperとして Searar Domaを使用するため以下のプラグインを�
     - http://doma.seasar.org/extension/doma_tools.html
 - IntelliJ
     - https://plugins.jetbrains.com/plugin/7615-doma-support
+
+## UT
+groovyのテスティングフレームワークである Spock Frameworkを使用しています。<br>
+一応Junit5を実行できる環境も整えているので Junitを使用したい際は src/test/javaパッケージを作成の上<br>
+上記パッケージ配下にjunitのテストクラスを作成してください。
+
+Junitに比べて圧倒的に簡単かつ効率的にテストが書けるのでSpockの使用を推奨します。
+
+### Spockの参考用サイト
+- [Spockを始めるのに最低限必要なGroovyの基本知識](https://qiita.com/yonetty/items/4322e76f93d36ce666c2)
+- [JUnit代わりにSpockを使ってみる](https://recruit.gmo.jp/engineer/jisedai/blog/junit-spock/)
+- [Spockを使ってJavaのテストを効率化する](https://qiita.com/umeki_ryo/items/98336bb8badca6dc11ac)
+
     
 ## 参考用サイト
 
