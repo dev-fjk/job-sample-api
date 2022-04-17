@@ -13,7 +13,7 @@
 
 ## API仕様書(Swagger)
 
-- [git hub pages](https://dev-fjk.github.io/job-sample-api/)
+- [git hub pages](https://y-gw-study.github.io/job-sample-api/)
 - [ローカル(ビルドが必要)](http://localhost:8080/swagger-ui/index.html)
 
 ローカルのSwagger上からAPIへリクエストを飛ばすことが可能です
