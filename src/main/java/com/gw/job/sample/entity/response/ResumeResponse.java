@@ -1,14 +1,17 @@
 package com.gw.job.sample.entity.response;
 
+import com.gw.job.sample.entity.result.ResumeResult;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 @Schema(description = "レジュメ情報レスポンス")
 public class ResumeResponse {
 
     @Schema(description = "ユーザーID", example = "1")
-    private long userID;
+    private long userId;
 
     @Schema(description = "苗字", example = "苗字")
     private String lastName;

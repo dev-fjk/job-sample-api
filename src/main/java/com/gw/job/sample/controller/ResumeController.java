@@ -1,6 +1,7 @@
 package com.gw.job.sample.controller;
 
 import com.gw.job.sample.config.OpenApiConstant;
+import com.gw.job.sample.converter.ResponseConverter;
 import com.gw.job.sample.entity.request.ResumeAddRequest;
 import com.gw.job.sample.entity.request.ResumeListQueryParameter;
 import com.gw.job.sample.entity.request.ResumeUpdateRequest;
@@ -48,20 +49,30 @@ public class ResumeController {
     public static final String RESUME_LOCATION_URI = "/resume/v1/users/{userId}";
 
     private final ResumeService resumeService;
+    private final ResponseConverter responseConverter;
 
+    /**
+     * レジュメ情報を取得する
+     *
+     * @param userId ユーザーId
+     * @return レジュメ情報 見つからない場合は空のJsonボディを返却
+     */
     @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "レジュメ情報を取得する")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "レジュメ取得結果 取得失敗時は空のJson Bodyを返す", content = @Content(
-                    schema = @Schema(implementation = ResumeResponse.class),
-                    mediaType = MediaType.APPLICATION_JSON_VALUE
-            )),
+            @ApiResponse(responseCode = "200", description = "レジュメ取得結果 取得失敗時は空のJson Bodyを返す",
+                    content = @Content(schema = @Schema(implementation = ResumeResponse.class),
+                            mediaType = MediaType.APPLICATION_JSON_VALUE
+                    )),
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
     public ResponseEntity<?> getResume(@PathVariable("userId") long userId) {
-        return ResponseEntity.ok().build();
+        var resumeResultOpt = resumeService.fetchUserResume(userId);
+        return resumeResultOpt.isPresent()
+                ? ResponseEntity.ok(responseConverter.convertResumeResponse(resumeResultOpt.get()))
+                : ResponseEntity.ok(responseConverter.empty());
     }
 
     @GetMapping("/companies/{cid}")
@@ -75,9 +86,8 @@ public class ResumeController {
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> getPostedUserResumeList(
-            @PathVariable("cid") long cid, @Validated @ModelAttribute ResumeListQueryParameter parameters) {
-        log.info("request: {} {}", cid, parameters);
+    public ResponseEntity<?> getPostedUserResumeList(@PathVariable("cid") long cid,
+                                                     @Validated @ModelAttribute ResumeListQueryParameter parameters) {
         return ResponseEntity.ok().build();
     }
 
@@ -117,7 +127,8 @@ public class ResumeController {
             @ApiResponse(responseCode = "409", ref = OpenApiConstant.CONFLICT),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> updateResume(@PathVariable("userId") long userId, @RequestBody ResumeUpdateRequest request) {
+    public ResponseEntity<?> updateResume(@PathVariable("userId") long userId,
+                                          @RequestBody ResumeUpdateRequest request) {
         return ResponseEntity.ok().build();
     }
 
