@@ -1,6 +1,5 @@
 package com.gw.job.sample.entity.response;
 
-import com.gw.job.sample.entity.result.ResumeResult;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
