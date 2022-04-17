@@ -42,8 +42,9 @@
 
 1. masterブランチからfeature/自身のユーザー名 という命名でブランチを作成する(例: feature/dev-fjk)
 1. 上記のfeatureブランチから task/ユーザー名/機能名 という命名でブランチを作成する(例: task/dev-fjk/get-resume)
+1. taskブランチで開発を進める。切りのいい段階で featureに向けてPull Requestを作成する
 
-レビュー必要な場合 taskブランチからfeatureブランチへ向けてPull Requestを作成し Reviewerに dev-fjkを設定してください。
+レビューが必要な場合 Reviewerに dev-fjkを設定してください。
 
 # ローカルでの開発設定
 
