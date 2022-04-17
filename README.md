@@ -28,7 +28,6 @@
 元々置いてある docs/specs/api-doc.yamlと差し替える
 
 ※ masterブランチのapi-docs.ymlの記載内容が反映されるので他のブランチで差し替えてもmasterにマージするまで反映されない
-※ git hub actionsを入れた後はmasterマージ時に自動で最新化されるようにしたい
 ~~~
 
 ## DB定義
