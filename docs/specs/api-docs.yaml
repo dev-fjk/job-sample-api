@@ -155,6 +155,35 @@ paths:
         "400":
           $ref: '#/components/responses/badRequest'
   /posted-company/v1/users/{userId}/companies/{cid}:
+    get:
+      tags:
+        - /posted-company/v1/
+      summary: 企業へ応募しているか返す
+      operationId: isPostedUser
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+        - name: cid
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "500":
+          $ref: '#/components/responses/internalServerError'
+        "200":
+          description: 企業へ応募済みのユーザーか返す
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PostedResponse'
+        "400":
+          $ref: '#/components/responses/badRequest'
     post:
       tags:
         - /posted-company/v1/
@@ -304,7 +333,7 @@ components:
     ResumeResponse:
       type: object
       properties:
-        userID:
+        userId:
           type: integer
           description: ユーザーID
           format: int64
@@ -386,7 +415,7 @@ components:
     PostedResume:
       type: object
       properties:
-        userID:
+        userId:
           type: integer
           description: ユーザーID
           format: int64
@@ -443,6 +472,24 @@ components:
           items:
             $ref: '#/components/schemas/PostedResume'
       description: 企業に応募しているレジュメ一覧レスポンス
+    PostedResponse:
+      type: object
+      properties:
+        userId:
+          type: integer
+          description: ユーザーID
+          format: int64
+          example: 1
+        cid:
+          type: integer
+          description: 企業ID
+          format: int64
+          example: 1
+        posted:
+          type: boolean
+          description: 応募済み判定 応募済みの場合 trueを返す
+          example: false
+      description: 応募判定レスポンス
     ProblemResponse:
       type: object
       properties:
