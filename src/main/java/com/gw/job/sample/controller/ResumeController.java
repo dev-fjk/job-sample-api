@@ -101,7 +101,7 @@ public class ResumeController {
     @ApiResponses({
             @ApiResponse(responseCode = "201",
                     description = "レジュメ登録成功 作成したリソースへのURIをlocationヘッダーに設定して返す",
-                    headers = @Header(name = "Location", required = true, description = "/resume/v1/users/1")
+                    headers = @Header(name = "location", required = true, description = "/resume/v1/users/1")
             ),
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
             @ApiResponse(responseCode = "409", ref = OpenApiConstant.CONFLICT),

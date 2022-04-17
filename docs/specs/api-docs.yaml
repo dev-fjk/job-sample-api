@@ -25,17 +25,18 @@ paths:
           in: path
           required: true
           schema:
+            minimum: 1
             type: integer
             format: int64
       responses:
-        "500":
-          $ref: '#/components/responses/internalServerError'
         "200":
           description: レジュメ取得結果 取得失敗時は空のJson Bodyを返す
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResumeResponse'
+        "500":
+          $ref: '#/components/responses/internalServerError'
         "400":
           $ref: '#/components/responses/badRequest'
     put:
@@ -57,18 +58,18 @@ paths:
               $ref: '#/components/schemas/ResumeUpdateRequest'
         required: true
       responses:
-        "404":
-          $ref: '#/components/responses/notFound'
-        "409":
-          $ref: '#/components/responses/conflict'
-        "500":
-          $ref: '#/components/responses/internalServerError'
         "200":
           description: 更新したレジュメ情報を返す
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResumeResponse'
+        "404":
+          $ref: '#/components/responses/notFound'
+        "409":
+          $ref: '#/components/responses/conflict'
+        "500":
+          $ref: '#/components/responses/internalServerError'
         "400":
           $ref: '#/components/responses/badRequest'
     post:
@@ -92,12 +93,10 @@ paths:
       responses:
         "409":
           $ref: '#/components/responses/conflict'
-        "500":
-          $ref: '#/components/responses/internalServerError'
         "201":
           description: レジュメ登録成功 作成したリソースへのURIをlocationヘッダーに設定して返す
           headers:
-            Location:
+            location:
               description: /resume/v1/users/1
               required: true
               style: simple
@@ -105,6 +104,8 @@ paths:
             '*/*':
               schema:
                 type: object
+        "500":
+          $ref: '#/components/responses/internalServerError'
         "400":
           $ref: '#/components/responses/badRequest'
     delete:
@@ -174,14 +175,14 @@ paths:
             type: integer
             format: int64
       responses:
-        "500":
-          $ref: '#/components/responses/internalServerError'
         "200":
           description: 企業へ応募済みのユーザーか返す
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PostedResponse'
+        "500":
+          $ref: '#/components/responses/internalServerError'
         "400":
           $ref: '#/components/responses/badRequest'
     post:
