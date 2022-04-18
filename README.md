@@ -1,6 +1,6 @@
 # job-sample-api
 
-求人PJ 事前学習用API
+求人PJ 事前学習用API aaaa
 
 ## エンドポイント
 
