@@ -21,7 +21,7 @@ public class ResumeRepository {
      * @param userId ユーザーID
      * @return レジュメ取得結果 見つからない場合Optional.emptyを返却
      */
-    public Optional<ResumeResult> fetchUserResume(long userId) {
+    public Optional<ResumeResult> findOne(long userId) {
         var resume = resumeDao.findByUserId(userId);
         return Optional.ofNullable(ResumeResult.of(resume));
     }

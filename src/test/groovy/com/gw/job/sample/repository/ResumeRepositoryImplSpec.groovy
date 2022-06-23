@@ -28,7 +28,7 @@ class ResumeRepositoryImplSpec extends Specification {
         1 * resumeDao.findByUserId(userId) >> resume
 
         when:
-        def actual = target.fetchUserResume(userId)
+        def actual = target.findOne(userId)
 
         then:
         actual == Optional.ofNullable(result)
@@ -39,7 +39,7 @@ class ResumeRepositoryImplSpec extends Specification {
         def userId = 1
 
         when:
-        def actual = target.fetchUserResume(userId)
+        def actual = target.findOne(userId)
 
         then:
         1 * resumeDao.findByUserId(userId) >> null

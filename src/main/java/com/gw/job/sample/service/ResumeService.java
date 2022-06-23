@@ -22,8 +22,8 @@ public class ResumeService {
      * @param userId ユーザーID
      * @return {@link ResumeResponse} レジュメが取得できなかった場合nullを返す
      */
-    public ResumeResponse fetchUserResume(long userId) {
-        var resumeResult = resumeRepository.fetchUserResume(userId);
+    public ResumeResponse findOne(long userId) {
+        var resumeResult = resumeRepository.findOne(userId);
         return resumeResult.map(result ->
                 ResumeResponse.builder()
                         .userId(result.getUserId())

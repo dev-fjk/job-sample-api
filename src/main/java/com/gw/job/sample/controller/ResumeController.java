@@ -69,7 +69,7 @@ public class ResumeController {
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
     public ResponseEntity<?> getResume(@PathVariable("userId") @Min(1) long userId) {
-        var resumeResponse = resumeService.fetchUserResume(userId);
+        var resumeResponse = resumeService.findOne(userId);
         return resumeResponse != null
                 ? ResponseEntity.ok(resumeResponse)
                 : ResponseEntity.ok(new EmptyResponse());
