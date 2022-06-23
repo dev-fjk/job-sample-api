@@ -1,6 +1,6 @@
 package com.gw.job.sample.controller
 
-import com.gw.job.sample.converter.ProblemConverter
+
 import com.gw.job.sample.entity.response.ProblemResponse
 import com.gw.job.sample.exception.RepositoryControlException
 import com.gw.job.sample.exception.ResourceAlreadyExistException

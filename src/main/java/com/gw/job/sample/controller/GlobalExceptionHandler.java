@@ -1,16 +1,14 @@
 package com.gw.job.sample.controller;
 
+import com.gw.job.sample.entity.response.ProblemResponse;
 import com.gw.job.sample.exception.RepositoryControlException;
 import com.gw.job.sample.exception.ResourceAlreadyExistException;
 import com.gw.job.sample.exception.ResourceNotFoundException;
 import com.gw.job.sample.exception.ValidationException;
-import com.gw.job.sample.converter.ProblemConverter;
-import com.gw.job.sample.entity.response.ProblemResponse;
+import java.util.stream.Collectors;
 import javax.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -22,8 +20,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
-    private final ProblemConverter problemConverter;
-
     /**
      * リクエストオブジェクトのバリデーションエラー
      *
@@ -31,8 +27,16 @@ public class GlobalExceptionHandler {
      * @return エラーレスポンス
      */
     @ExceptionHandler(BindException.class)
-    public ResponseEntity<ProblemResponse> handleBindException(BindException exception) {
-        return this.errorResponses(HttpStatus.BAD_REQUEST, problemConverter.convert(exception));
+    public ProblemResponse handleBindException(BindException exception) {
+        var errors = exception.getFieldErrors().stream()
+                .map(error -> error.getField() + " は " + error.getDefaultMessage())
+                .collect(Collectors.joining(", "));
+
+        return ProblemResponse.builder()
+                .title("リクエストされたパラメータは正しくありません")
+                .status(HttpStatus.BAD_REQUEST.value())
+                .detail(errors)
+                .build();
     }
 
     /**
@@ -42,8 +46,16 @@ public class GlobalExceptionHandler {
      * @return エラーレスポンス
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    public ResponseEntity<ProblemResponse> handleConstraintViolationException(ConstraintViolationException exception) {
-        return this.errorResponses(HttpStatus.BAD_REQUEST, problemConverter.convert(exception));
+    public ProblemResponse handleConstraintViolationException(ConstraintViolationException exception) {
+        var errors = exception.getConstraintViolations().stream()
+                .map(v -> v.getPropertyPath() + " は " + v.getMessage())
+                .collect(Collectors.joining(", "));
+
+        return ProblemResponse.builder()
+                .title("リクエストされたパラメータは正しくありません")
+                .status(HttpStatus.BAD_REQUEST.value())
+                .detail(errors)
+                .build();
     }
 
     /**
@@ -53,8 +65,12 @@ public class GlobalExceptionHandler {
      * @return エラーレスポンス
      */
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<ProblemResponse> handleValidationException(ValidationException exception) {
-        return this.errorResponses(HttpStatus.BAD_REQUEST, problemConverter.convert(exception));
+    public ProblemResponse handleValidationException(ValidationException exception) {
+        return ProblemResponse.builder()
+                .title("リクエストされたパラメータは正しくありません")
+                .status(HttpStatus.BAD_REQUEST.value())
+                .detail(exception.getMessage())
+                .build();
     }
 
     /**
@@ -64,8 +80,12 @@ public class GlobalExceptionHandler {
      * @return エラーレスポンス
      */
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ProblemResponse> handleResourceNotFoundException(ResourceNotFoundException exception) {
-        return this.errorResponses(HttpStatus.NOT_FOUND, problemConverter.convert(exception));
+    public ProblemResponse handleResourceNotFoundException(ResourceNotFoundException exception) {
+        return ProblemResponse.builder()
+                .title("リクエストされたリソースは見つかりませんでした")
+                .status(HttpStatus.NOT_FOUND.value())
+                .detail(exception.getMessage())
+                .build();
     }
 
     /**
@@ -75,8 +95,12 @@ public class GlobalExceptionHandler {
      * @return エラーレスポンス
      */
     @ExceptionHandler(ResourceAlreadyExistException.class)
-    public ResponseEntity<ProblemResponse> handleResourceNotFoundException(ResourceAlreadyExistException exception) {
-        return this.errorResponses(HttpStatus.CONFLICT, problemConverter.convert(exception));
+    public ProblemResponse handleResourceNotFoundException(ResourceAlreadyExistException exception) {
+        return ProblemResponse.builder()
+                .title("リソースが既に存在しています")
+                .status(HttpStatus.CONFLICT.value())
+                .detail(exception.getMessage())
+                .build();
     }
 
     /**
@@ -86,8 +110,12 @@ public class GlobalExceptionHandler {
      * @return エラーレスポンス
      */
     @ExceptionHandler(RepositoryControlException.class)
-    public ResponseEntity<ProblemResponse> handleRepositoryControlException(RepositoryControlException exception) {
-        return this.errorResponses(HttpStatus.INTERNAL_SERVER_ERROR, problemConverter.convert(exception));
+    public ProblemResponse handleRepositoryControlException(RepositoryControlException exception) {
+        return ProblemResponse.builder()
+                .title("データの更新で失敗しました")
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .detail(exception.getMessage())
+                .build();
     }
 
     /**
@@ -97,21 +125,11 @@ public class GlobalExceptionHandler {
      * @return エラーレスポンス
      */
     @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<ProblemResponse> handleRuntimeException(RuntimeException exception) {
-        exception.printStackTrace();
-        return this.errorResponses(HttpStatus.INTERNAL_SERVER_ERROR, problemConverter.convert(exception));
-    }
-
-    /**
-     * エラーレスポンスを作成する
-     *
-     * @param status : HTTPステータス
-     * @param body   : HTTPボディ
-     * @return エラーレスポンス
-     */
-    private ResponseEntity<ProblemResponse> errorResponses(HttpStatus status, ProblemResponse body) {
-        return ResponseEntity.status(status)
-                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
-                .body(body);
+    public ProblemResponse handleRuntimeException(RuntimeException exception) {
+        return ProblemResponse.builder()
+                .title("予期しないエラーが発生しました")
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .detail(exception.getMessage())
+                .build();
     }
 }

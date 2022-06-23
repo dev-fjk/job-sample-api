@@ -5,6 +5,9 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
 import org.seasar.doma.boot.ConfigAutowireable;
 
+/**
+ * Resumeテーブルの操作を行う　doma Dao
+ */
 @Dao
 @ConfigAutowireable
 public interface ResumeDao {

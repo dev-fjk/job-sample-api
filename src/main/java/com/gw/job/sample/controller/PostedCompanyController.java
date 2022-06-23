@@ -50,7 +50,7 @@ public class PostedCompanyController {
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> isPostedUser(@PathVariable("userId") long userId, @PathVariable("cid") long cid) {
+    public ResponseEntity<PostedResponse> isPostedUser(@PathVariable("userId") long userId, @PathVariable("cid") long cid) {
         return ResponseEntity.ok().build();
     }
 

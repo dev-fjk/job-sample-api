@@ -1,9 +1,8 @@
 package com.gw.job.sample.controller
 
-import com.gw.job.sample.converter.ProblemConverter
-import com.gw.job.sample.converter.ResponseConverter
+
 import com.gw.job.sample.entity.result.ResumeResult
-import com.gw.job.sample.service.interfaces.ResumeService
+import com.gw.job.sample.service.ResumeService
 import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration
@@ -19,7 +18,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebMvcTest(controllers = ResumeController.class, includeFilters = @ComponentScan.Filter(
-        type = FilterType.ASSIGNABLE_TYPE, classes = [GlobalExceptionHandler.class, ProblemConverter.class]
+        type = FilterType.ASSIGNABLE_TYPE, classes = [GlobalExceptionHandler.class]
 ))
 @ActiveProfiles(["test"])
 @ImportAutoConfiguration
@@ -31,9 +30,6 @@ class ResumeControllerSpec extends Specification {
     @SpringBean
     ResumeService resumeService = Mock()
 
-    @SpringBean
-    ResponseConverter responseConverter = Mock()
-
     def "正常系 getResume レジュメ取得成功"() {
         given:
         def userId = 1
@@ -44,8 +40,7 @@ class ResumeControllerSpec extends Specification {
         def requestUri = UriComponentsBuilder.fromUriString("/resume/v1/users/{userId}")
                 .buildAndExpand(Map.of("userId", userId)).toUri()
 
-        1 * resumeService.fetchUserResume(userId) >> resultOpt
-        1 * responseConverter.convertResumeResponse(result)
+        1 * resumeService.findOne(userId) >> resultOpt
 
         expect:
         mockMvc.perform(get(requestUri)).andExpect(status().isOk())
@@ -60,8 +55,7 @@ class ResumeControllerSpec extends Specification {
         def requestUri = UriComponentsBuilder.fromUriString("/resume/v1/users/{userId}")
                 .buildAndExpand(Map.of("userId", userId)).toUri()
 
-        1 * resumeService.fetchUserResume(userId) >> emptyOpt
-        1 * responseConverter.empty()
+        1 * resumeService.findOne(userId) >> emptyOpt
 
         expect:
         mockMvc.perform(get(requestUri)).andExpect(status().isOk())

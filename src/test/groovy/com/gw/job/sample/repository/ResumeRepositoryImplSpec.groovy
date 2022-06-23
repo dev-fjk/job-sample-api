@@ -9,11 +9,11 @@ import java.time.LocalDate
 
 class ResumeRepositoryImplSpec extends Specification {
 
-    ResumeRepositoryImpl target
+    ResumeRepository target
     def resumeDao = Mock(ResumeDao)
 
     def setup() {
-        target = new ResumeRepositoryImpl(resumeDao)
+        target = new ResumeRepository(resumeDao)
     }
 
     def "正常系 fetchUserResume レジュメ取得成功"() {
@@ -28,7 +28,7 @@ class ResumeRepositoryImplSpec extends Specification {
         1 * resumeDao.findByUserId(userId) >> resume
 
         when:
-        def actual = target.fetchUserResume(userId)
+        def actual = target.findOne(userId)
 
         then:
         actual == Optional.ofNullable(result)
@@ -39,7 +39,7 @@ class ResumeRepositoryImplSpec extends Specification {
         def userId = 1
 
         when:
-        def actual = target.fetchUserResume(userId)
+        def actual = target.findOne(userId)
 
         then:
         1 * resumeDao.findByUserId(userId) >> null

@@ -14,7 +14,7 @@ import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * レジュメ一覧取得時の クエリパラメータ一覧
+ * レジュメ一覧取得時の クエリパラメータ
  */
 @Data
 @Schema(description = "レジュメ一覧検索条件")
@@ -37,11 +37,13 @@ public class ResumeListQueryParameter {
     private String selectionStatus = ALL;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @Parameter(description = "応募日時の絞り込み開始時刻 ISO8601拡張形式", example = "2022-04-30T00:00:00")
+    @Parameter(description = "応募日時の絞り込み開始時刻 ISO8601拡張形式",
+            schema = @Schema(type = "string"), example = "2022-04-30T00:00:00")
     private LocalDateTime postedDateFrom;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    @Parameter(description = "応募日時の絞り込み終了時刻 ISO8601拡張形式", example = "2022-04-30T23:59:59")
+    @Parameter(description = "応募日時の絞り込み終了時刻 ISO8601拡張形式",
+            schema = @Schema(type = "string"), example = "2022-04-30T23:59:59")
     private LocalDateTime postedDateTo;
 
     /**
@@ -55,5 +57,30 @@ public class ResumeListQueryParameter {
         return ALL.equals(this.selectionStatus) || Arrays.stream(SelectionStatus.values())
                 .map(SelectionStatus::getValue)
                 .anyMatch(v -> this.selectionStatus.equals(v));
+    }
+
+    /**
+     * postedDateFromとpostedDateToの前後関係をチェックする
+     *
+     * @return fromとtoが同じ時刻 or fromの方が前の時刻ならtrue
+     */
+    @Hidden
+    @AssertTrue(message = "応募日時(開始) より応募日時(終了)は 遅い日時を設定してください")
+    public boolean isValidPostedDateLange() {
+        return this.isValidDateTimeLange(this.postedDateFrom, this.postedDateTo);
+    }
+
+    /**
+     * 日時の前後関係を返す
+     *
+     * @param from 開始指定
+     * @param to   終了指定
+     * @return true:問題なし false: 問題あり
+     */
+    private boolean isValidDateTimeLange(LocalDateTime from, LocalDateTime to) {
+        if (from == null || to == null) {
+            return true;
+        }
+        return to.isBefore(from) || from.equals(to);
     }
 }
