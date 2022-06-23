@@ -1,6 +1,6 @@
 package com.gw.job.sample.controller
 
-import com.gw.job.sample.converter.ProblemConverter
+
 import com.gw.job.sample.converter.ResponseConverter
 import com.gw.job.sample.entity.result.ResumeResult
 import com.gw.job.sample.service.interfaces.ResumeService

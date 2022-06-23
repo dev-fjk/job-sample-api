@@ -1,7 +1,7 @@
 package com.gw.job.sample.entity.result;
 
 import com.gw.job.sample.entity.Resume;
-import com.gw.job.sample.utility.DateFormatterUtil;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Value;
@@ -19,7 +19,7 @@ public class ResumeResult {
 
     String firstName;
 
-    String birthDate;
+    LocalDate birthDate;
 
     String jobDescription;
 
@@ -36,7 +36,7 @@ public class ResumeResult {
                 .userId(resume.getUserId())
                 .lastName(resume.getLastName())
                 .firstName(resume.getFirstName())
-                .birthDate(DateFormatterUtil.isoDateToString(resume.getBirthDate()))
+                .birthDate(resume.getBirthDate())
                 .jobDescription(resume.getJobDescription())
                 .build();
     }

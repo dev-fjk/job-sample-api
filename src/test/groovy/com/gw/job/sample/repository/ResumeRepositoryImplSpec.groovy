@@ -9,11 +9,11 @@ import java.time.LocalDate
 
 class ResumeRepositoryImplSpec extends Specification {
 
-    ResumeRepositoryImpl target
+    ResumeRepository target
     def resumeDao = Mock(ResumeDao)
 
     def setup() {
-        target = new ResumeRepositoryImpl(resumeDao)
+        target = new ResumeRepository(resumeDao)
     }
 
     def "正常系 fetchUserResume レジュメ取得成功"() {

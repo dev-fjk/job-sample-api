@@ -17,7 +17,7 @@ public abstract class ResumeBaseRequest {
     private String firstName;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @Schema(description = "生年月日 ISO8601拡張形式", example = "1990-09-10", required = true)
+    @Schema(description = "生年月日 ISO8601拡張形式", type = "string", example = "1990-09-10", required = true)
     private LocalDate birthDate;
 
     @Schema(description = "職務要約", example = "プログラマーとして働いていました")

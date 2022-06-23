@@ -1,6 +1,8 @@
 package com.gw.job.sample.entity.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Data;
 
@@ -35,14 +37,14 @@ public class PostedResumeListResponse {
         @Schema(description = "名前", example = "名前")
         private String firstName;
 
-        @Schema(description = "生年月日 yyyy-MM-ddの形式", example = "1990-10-10")
-        private String birthDate;
+        @Schema(description = "生年月日 yyyy-MM-ddの形式", type = "string", example = "1990-10-10")
+        private LocalDate birthDate;
 
         @Schema(description = "職務要約", example = "プログラマーとして働いていました。")
         private String jobDescription;
 
-        @Schema(description = "応募日時 ISO8601形式の日付文字列", example = "2022-04-30T12:00:00")
-        private String postedDate;
+        @Schema(description = "応募日時 ISO8601形式の日付文字列", type = "string", example = "2022-04-30T12:00:00")
+        private LocalDateTime postedDate;
 
         @Schema(description = "選考状況ID 0:採用前,1:選考中,2:採用,9:不採用", example = "1")
         private String selectionStatusId;

@@ -6,11 +6,11 @@ import spock.lang.Specification
 
 class ResumeServiceImplSpec extends Specification {
 
-    ResumeServiceImpl target
+    ResumeService target
     def resumeRepository = Mock(ResumeRepository)
 
     def setup() {
-        target = new ResumeServiceImpl(resumeRepository)
+        target = new ResumeService(resumeRepository)
     }
 
     def "正常系 findUserResume"() {
