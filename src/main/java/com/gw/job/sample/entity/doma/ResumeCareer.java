@@ -11,74 +11,44 @@ import org.seasar.doma.Id;
 import org.seasar.doma.Table;
 
 /**
- * DB レジュメテーブル Entity
+ * DB 在籍企業テーブル Entity
  */
 @Data
 @Entity
-@Table(name = "resume")
-public class Resume {
+@Table(name = "resume_career")
+public class ResumeCareer {
 
     /**
      * ユーザーID
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long userId;
 
     /**
-     * 苗字
+     * 在籍企業ID
      */
-    private String lastName;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long experienceId;
 
     /**
-     * 名前
+     * 企業名
      */
-    private String firstName;
+    private String companyName;
 
     /**
-     * 苗字 フリガナ
+     * 在籍中フラグ
      */
-    private String lastNameKana;
+    private boolean belonging;
 
     /**
-     * 名前 フリガナ
+     * 入社日
      */
-    private String firstNameKana;
+    private LocalDate entryDate;
 
     /**
-     * 誕生日
+     * 退職日
      */
-    private LocalDate birthDay;
-
-    /**
-     * 都道府県コード
-     */
-    private int prefectureCode;
-
-    /**
-     * 住所　番地・建物名
-     */
-    private String cityAddress;
-
-    /**
-     * 卒業した学校種別
-     */
-    private int schoolType;
-
-    /**
-     * 学校名
-     */
-    private String schoolName;
-
-    /**
-     * 就業経験
-     */
-    private boolean working;
-
-    /**
-     * 職務要約
-     */
-    private String jobDescription;
+    private LocalDate retiredDate;
 
     /**
      * 作成日時

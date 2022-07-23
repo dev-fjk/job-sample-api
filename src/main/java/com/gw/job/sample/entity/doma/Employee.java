@@ -11,19 +11,19 @@ import org.seasar.doma.Id;
 import org.seasar.doma.Table;
 
 /**
- * DB レジュメテーブル Entity
+ * DB 応募企業テーブル Entity
  */
 @Data
 @Entity
-@Table(name = "resume")
-public class Resume {
+@Table(name = "employee")
+public class Employee {
 
     /**
-     * ユーザーID
+     * 企業ID
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long userId;
+    private long employeeId;
 
     /**
      * 苗字
@@ -36,49 +36,14 @@ public class Resume {
     private String firstName;
 
     /**
-     * 苗字 フリガナ
+     * 入社日
      */
-    private String lastNameKana;
+    private LocalDate entryDate;
 
     /**
-     * 名前 フリガナ
+     * 部署コード
      */
-    private String firstNameKana;
-
-    /**
-     * 誕生日
-     */
-    private LocalDate birthDay;
-
-    /**
-     * 都道府県コード
-     */
-    private int prefectureCode;
-
-    /**
-     * 住所　番地・建物名
-     */
-    private String cityAddress;
-
-    /**
-     * 卒業した学校種別
-     */
-    private int schoolType;
-
-    /**
-     * 学校名
-     */
-    private String schoolName;
-
-    /**
-     * 就業経験
-     */
-    private boolean working;
-
-    /**
-     * 職務要約
-     */
-    private String jobDescription;
+    private int departmentCode;
 
     /**
      * 作成日時
