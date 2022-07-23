@@ -41,11 +41,13 @@ DDLは以下
 
 ## ブランチ運用
 
-1. masterブランチからfeature/自身のユーザー名 という命名でブランチを作成する(例: feature/dev-fjk)
-1. 上記のfeatureブランチから task/ユーザー名/機能名 という命名でブランチを作成する(例: task/dev-fjk/get-resume)
-1. taskブランチで開発を進める。切りのいい段階で featureに向けてPull Requestを作成する
-
-レビューが必要な場合 Reviewerに dev-fjkを設定してください。
+~~~
+(1) develop/自身のユーザー名というブランチを作成
+(2) developブランチからfeature/自身のユーザー名/機能名というブランチを作成
+ex) feature/dev-fjk/add-resume
+(3) feature -> developブランチへPRを作成する
+(4) reviewerにdev-fjkを設定
+~~~
 
 # ローカルでの開発設定
 
