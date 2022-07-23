@@ -10,10 +10,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 応募状況の操作を行うコントローラー
  */
-@Slf4j
 @Validated
 @RestController
 @RequestMapping(path = PostedCompanyController.BASE_PATH)
@@ -38,6 +37,13 @@ public class PostedCompanyController {
 
     public static final String BASE_PATH = "/posted-company/v1/";
 
+    /**
+     * 応募情報を取得する
+     *
+     * @param userId    ユーザーID
+     * @param companyId 企業ID
+     * @return {@link PostedResponse} が設定されたResponseEntity
+     */
     @GetMapping("/users/{userId}/companies/{companyId}")
     @Operation(summary = "応募情報を取得する")
     @ApiResponses({
@@ -54,6 +60,13 @@ public class PostedCompanyController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 企業へ応募する
+     *
+     * @param userId    ユーザーID
+     * @param companyId 企業ID
+     * @return {@link PostedResponse} 登録した応募情報がbodyに設定されたResponseEntity
+     */
     @PostMapping("/users/{userId}/companies/{companyId}")
     @Operation(summary = "企業へ応募する")
     @ApiResponses({
@@ -63,13 +76,23 @@ public class PostedCompanyController {
                     )),
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
             @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
+            @ApiResponse(responseCode = "409", ref = OpenApiConstant.CONFLICT),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
     public ResponseEntity<PostedResponse> postUser(@PathVariable("userId") long userId,
                                                    @PathVariable("companyId") long companyId) {
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
+    /**
+     * 応募情報を更新する
+     *
+     * @param userId        ユーザーID
+     * @param companyId     企業ID
+     * @param request       応募更新リクエスト
+     * @param bindingResult バリデーションエラー情報を保持したIF
+     * @return {@link PostedResponse} 更新した応募情報をbodyに保持したResponseEntity
+     */
     @PutMapping("/users/{userId}/companies/{companyId}")
     @Operation(summary = "応募情報を更新する")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -83,14 +106,23 @@ public class PostedCompanyController {
             @ApiResponse(responseCode = "204", ref = OpenApiConstant.UPDATED_SUCCESS),
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
             @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
+            @ApiResponse(responseCode = "409", ref = OpenApiConstant.CONFLICT),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> updatePostUser(@PathVariable("userId") long userId,
-                                            @PathVariable("companyId") long companyId,
-                                            @Validated @RequestBody PostedUpdateRequest request) {
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<PostedResponse> updatePostUser(@PathVariable("userId") long userId,
+                                                         @PathVariable("companyId") long companyId,
+                                                         @Validated @RequestBody PostedUpdateRequest request,
+                                                         BindingResult bindingResult) {
+        return ResponseEntity.ok().build();
     }
 
+    /**
+     * 応募情報を削除する
+     *
+     * @param userId    ユーザーID
+     * @param companyId 企業ID
+     * @return ResponseEntity
+     */
     @DeleteMapping("/users/{userId}/companies/{companyId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "ユーザーの応募情報を削除する")

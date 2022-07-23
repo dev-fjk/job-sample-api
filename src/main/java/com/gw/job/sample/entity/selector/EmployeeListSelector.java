@@ -10,12 +10,12 @@ import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * レジュメ一覧取得時の クエリパラメータ
+ * 社員一覧取得時の クエリパラメータ
  */
 @Data
-@Schema(description = "レジュメ一覧検索条件")
+@Schema(description = "社員一覧検索条件")
 @ParameterObject
-public class ResumeListSelector {
+public class EmployeeListSelector {
 
     @Parameter(description = "取得開始位置 1以上の値を設定",
             schema = @Schema(format = "int32", defaultValue = "1"))
@@ -25,17 +25,18 @@ public class ResumeListSelector {
             schema = @Schema(format = "int32", defaultValue = "20"))
     private int count = 20;
 
-    @Parameter(description = "ユーザーIDリスト カンマ区切りで複数指定可能",
+    @Parameter(description = "社員IDリスト カンマ区切りで複数指定可能",
             schema = @Schema(type = "array", format = "int64"))
-    private List<Long> userIds = Collections.emptyList();
+    private List<Long> employeeIds = Collections.emptyList();
 
     @Parameter(schema = @Schema(type = "array", format = "int32"),
-            description = "選考状況 カンマ区切りで複数指定可能　\n" +
-                    "* `1` - 選考前 \n" +
-                    "* `2` - 選考中 \n" +
-                    "* `3` - 採用 \n" +
-                    "* `4` - 不採用 \n")
-    private List<Integer> status = Collections.emptyList();
+            description = "部門コード カンマ区切りで複数指定可能　\n" +
+                    "* `1` - 役員 \n" +
+                    "* `2` - 総務部 \n" +
+                    "* `3` - 経理部 \n" +
+                    "* `4` - 営業部 \n" +
+                    "* `5` - 開発部 \n")
+    private List<Integer> departmentCodes = Collections.emptyList();
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Parameter(description = "入社日 開始指定", schema = @Schema(type = "string"))
@@ -44,13 +45,4 @@ public class ResumeListSelector {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Parameter(description = "入社日 終了指定 entryDateFromより過去日は設定不可", schema = @Schema(type = "string"))
     private LocalDate entryDateTo;
-
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @Parameter(description = "応募日 開始指定", schema = @Schema(type = "string"))
-    private LocalDate createdDateFrom;
-
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @Parameter(description = "応募日 終了指定 createdDateFromより過去日は設定不可 " +
-            "2022-07-15を指定した場合 2022-07-15 23:59:59までに応募したユーザーが対象となる", schema = @Schema(type = "string"))
-    private LocalDate createdDateTo;
 }
