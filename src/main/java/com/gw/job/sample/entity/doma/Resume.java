@@ -1,4 +1,4 @@
-package com.gw.job.sample.entity;
+package com.gw.job.sample.entity.doma;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
