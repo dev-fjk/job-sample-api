@@ -70,6 +70,27 @@ spring.profiles.activeの値を使用したいDBに合わせて設定
     - localプロファイル(デフォルト)
 - h2使用時
     - h2プロファイル
+    
+### プラグイン設定
+
+OR Mapperとして Searar Domaを使用するため以下のプラグインを導入することを推奨します。
+
+- Eclipse
+    - http://doma.seasar.org/extension/doma_tools.html
+- IntelliJ
+    - https://plugins.jetbrains.com/plugin/7615-doma-support
+    
+### 一部のアノテーションでコンパイルエラーが出る場合
+- Lombokというライブラリを使用して開発しているため、IDE側にLombokを認識させる設定が必要
+
+IDE名 Lombok導入 とGoogleで調べればいくらでも記事が出てくるので調べてみてください
+
+### CheckStyle設定(任意)
+configパッケージ配下にcheckStyleを置いているので任意で使用する
+
+- [Checkstyle 使い方メモ](https://qiita.com/opengl-8080/items/cb4122a19269e8e683a4#ide-%E3%81%A7%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B)
+    - IDEで使用する の欄を参照
+
 
 ## コーディング規約
 - 基本的にService層以降もInterfaceは作成しない
@@ -104,19 +125,6 @@ spring.profiles.activeの値を使用したいDBに合わせて設定
     - 例えばResumeServiceクラスでレジュメを1件取得するメソッドであれば findOne といった命名にする
     - ResumeServiceというクラス名の時点でResumeを取得することは明確に理解できるので findResume のような命名は避けること
 
-### プラグイン設定
-
-OR Mapperとして Searar Domaを使用するため以下のプラグインを導入することを推奨します。
-
-- Eclipse
-    - http://doma.seasar.org/extension/doma_tools.html
-- IntelliJ
-    - https://plugins.jetbrains.com/plugin/7615-doma-support
-    
-### 一部のアノテーションでエラーが出る場合
-- Lombokというライブラリを使用して開発しているため、IDE側にLombokを認識させる設定が必要
-
-IDE名 Lombok導入 とGoogleで調べればいくらでも記事が出てくるので調べてみてください
 
 ## UT
 
