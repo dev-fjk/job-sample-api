@@ -2,10 +2,10 @@ package com.gw.job.sample.controller;
 
 import com.gw.job.sample.config.OpenApiConstant;
 import com.gw.job.sample.entity.request.ResumeAddRequest;
-import com.gw.job.sample.entity.request.ResumeListQueryParameter;
 import com.gw.job.sample.entity.request.ResumeUpdateRequest;
 import com.gw.job.sample.entity.response.PostedResumeListResponse;
 import com.gw.job.sample.entity.response.ResumeResponse;
+import com.gw.job.sample.entity.selector.ResumeListSelector;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,10 +16,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Map;
 import javax.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,7 +36,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 /**
  * レジュメ情報の操作を行うコントローラー
  */
-@Slf4j
 @Validated
 @RestController
 @RequestMapping(path = ResumeController.BASE_PATH)
@@ -50,25 +49,31 @@ public class ResumeController {
      * レジュメ情報を取得する
      *
      * @param userId ユーザーId
-     * @return レジュメ情報 見つからない場合は空のJsonボディを返却
+     * @return {@link ResumeResponse}
      */
     @GetMapping("/users/{userId}")
-    @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "レジュメ情報を取得する")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "レジュメ取得結果 取得失敗時は空のJson Bodyを返す",
+            @ApiResponse(responseCode = "200", description = "レジュメ取得結果",
                     content = @Content(schema = @Schema(implementation = ResumeResponse.class),
                             mediaType = MediaType.APPLICATION_JSON_VALUE
                     )),
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
+            @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> getResume(@PathVariable("userId") @Min(1) long userId) {
+    public ResponseEntity<ResumeResponse> getResume(@PathVariable("userId") @Min(1) long userId) {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/companies/{cid}")
-    @ResponseStatus(HttpStatus.OK)
+    /**
+     * 企業へ応募中のレジュメ一覧を取得する
+     *
+     * @param companyId 企業ID
+     * @param selector  {@link ResumeListSelector} クエリパラメータ
+     * @return {@link PostedResumeListResponse}
+     */
+    @GetMapping("/companies/{companyId}")
     @Operation(summary = "企業へ応募中のレジュメ一覧を取得する")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "レジュメ一覧取得結果", content = @Content(
@@ -79,12 +84,20 @@ public class ResumeController {
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
     public ResponseEntity<PostedResumeListResponse> getPostedUserResumeList(
-            @PathVariable("cid") long cid,
-            @Validated @ModelAttribute ResumeListQueryParameter parameters) {
+            @PathVariable("companyId") long companyId,
+            @Validated @ModelAttribute ResumeListSelector selector,
+            BindingResult bindingResult) {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/users/{userId}")
+    /**
+     * レジュメを登録する
+     *
+     * @param request       {@link ResumeAddRequest} レジュメ登録リクエスト
+     * @param bindingResult バリデーションエラー情報を保持するIF
+     * @return locationHeaderを設定したResponseEntity
+     */
+    @PostMapping("/users/")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "レジュメ情報を登録する")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -93,38 +106,53 @@ public class ResumeController {
     @ApiResponses({
             @ApiResponse(responseCode = "201",
                     description = "レジュメ登録成功 作成したリソースへのURIをlocationヘッダーに設定して返す",
-                    headers = @Header(name = "location", required = true, description = "/resume/v1/users/1")
+                    headers = @Header(name = "location", description = "作成したレジュメ取得用のパス",
+                            required = true, schema = @Schema(type = "string", example = "/resume/v1/users/1"))
             ),
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
-            @ApiResponse(responseCode = "409", ref = OpenApiConstant.CONFLICT),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> addResume(@PathVariable("userId") long userId, @RequestBody ResumeAddRequest request) {
+    public ResponseEntity<?> addResume(@Validated @RequestBody ResumeAddRequest request,
+                                       BindingResult bindingResult) {
+        long dummyUserId = 1L;
         return ResponseEntity.created(UriComponentsBuilder.newInstance().path("/resume/v1/users/{userId}")
-                .buildAndExpand(Map.of("userId", userId)).toUri()).build();
+                .buildAndExpand(Map.of("userId", dummyUserId)).toUri()).build();
     }
 
+    /**
+     * レジュメを更新する
+     *
+     * @param userId        ユーザーID
+     * @param request       {@link ResumeUpdateRequest} 更新リクエスト
+     * @param bindingResult 　バリデーションエラー情報を保持するIF
+     * @return {@link ResumeResponse} 更新したレジュメ情報
+     */
     @PutMapping("/users/{userId}")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "レジュメ情報を更新する")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "レジュメ情報を更新する " +
+            "在籍企業と経験職種は ID未設定: 追加, 既存のIDを指定: 更新, 既存のID未設定: 削除となる")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
             content = @Content(schema = @Schema(implementation = ResumeUpdateRequest.class))
     )
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "更新したレジュメ情報を返す", content = @Content(
-                    schema = @Schema(implementation = ResumeResponse.class),
-                    mediaType = MediaType.APPLICATION_JSON_VALUE
-            )),
+            @ApiResponse(responseCode = "204", ref = OpenApiConstant.UPDATED_SUCCESS),
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
             @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
             @ApiResponse(responseCode = "409", ref = OpenApiConstant.CONFLICT),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<ResumeResponse> updateResume(@PathVariable("userId") long userId,
-                                                       @RequestBody ResumeUpdateRequest request) {
+    public ResponseEntity<?> updateResume(@PathVariable("userId") long userId,
+                                          @Validated @RequestBody ResumeUpdateRequest request,
+                                          BindingResult bindingResult) {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * レジュメを削除する
+     *
+     * @param userId ユーザーID
+     * @return ResponseEntity
+     */
     @DeleteMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "レジュメ情報を削除する")
