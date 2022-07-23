@@ -6,6 +6,11 @@ spring:
     encoding: UTF-8
   jackson:
     time-zone: "Asia/Tokyo"
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3314/job_db
+    username: user
+    password: password
 
 logging:
   level:
@@ -29,9 +34,3 @@ springdoc:
     doc-expansion: list
     config-url: /v3/api-docs/swagger-config
     url: /v3/api-docs
-
----
-# -Dspring.profiles.activeを指定しなかった場合に実行される application.ymlの指定
-spring:
-  profiles:
-    default: local
