@@ -1,22 +1,22 @@
 package com.gw.job.sample.entity.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.Set;
-import javax.validation.Valid;
+import java.time.LocalDate;
+import javax.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.validator.constraints.Range;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Data
 @Schema(description = "応募状況更新リクエスト")
 public class PostedUpdateRequest {
 
-    @Valid
-    private Set<PostedUserResume> resumes;
+    @NotNull
+    @Range(min = 1, max = 4)
+    @Schema(description = "選考状況", example = "1")
+    private Integer status;
 
-    @Data
-    @Schema(description = "応募中のレジュメ")
-    public static class PostedUserResume {
-
-        @Schema(description = "ユーザーID", example = "1")
-        private long userId;
-    }
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @Schema(description = "入社日 status:3の場合必須, status:3以外の場合は設定出来ない", example = "2022-07-15")
+    private LocalDate entryDate;
 }
