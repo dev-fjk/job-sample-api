@@ -11,7 +11,7 @@ import org.seasar.doma.Id;
 import org.seasar.doma.Table;
 
 /**
- * DB 応募企業テーブル Entity
+ * DB 従業員テーブル Entity
  */
 @Data
 @Entity
