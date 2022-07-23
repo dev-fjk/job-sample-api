@@ -18,7 +18,7 @@
 ## DB定義
 - [DB設計](https://namugahaku.atlassian.net/l/cp/DA8wbXq6)
 
-※confluenceのアカウントが必要かも
+※confluenceのアカウントが必要
 
 DDLは以下
 - resources/h2/init.sql(h2)
@@ -112,6 +112,11 @@ OR Mapperとして Searar Domaを使用するため以下のプラグインを�
     - http://doma.seasar.org/extension/doma_tools.html
 - IntelliJ
     - https://plugins.jetbrains.com/plugin/7615-doma-support
+    
+### 一部のアノテーションでエラーが出る場合
+- Lombokというライブラリを使用して開発しているため、IDE側にLombokを認識させる設定が必要
+
+IDE名 Lombok導入 とGoogleで調べればいくらでも記事が出てくるので調べてみてください
 
 ## UT
 
@@ -130,6 +135,7 @@ Junitに比べて圧倒的に簡単かつ効率的にテストが書けるので
 ## 参考用サイト
 
 - [Springのレイヤーアーキテクチャ](http://terasolunaorg.github.io/guideline/public_review/Overview/ApplicationLayering.html)
+- [Lombok使い方メモ](https://qiita.com/opengl-8080/items/671ffd4bf84fe5e32557)
 - [Doma リファレンス](http://doma.seasar.org/reference/index.html)
 - [Doma Framework](https://github.com/domaframework/doma-spring-boot)
 - [spring-doc-openapi メモ書き](https://ksby.hatenablog.com/entry/2021/03/25/072126)
