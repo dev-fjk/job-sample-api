@@ -51,7 +51,7 @@ public class EmployeeController {
      * @param employeeId 社員Id
      * @return 社員情報
      */
-    @GetMapping("/{employeeId}")
+    @GetMapping("/get/{employeeId}")
     @Operation(summary = "社員情報を取得する")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "社員情報取得結果",
@@ -73,7 +73,7 @@ public class EmployeeController {
      * @param bindingResult バリデーションエラー情報を保持するIF
      * @return {@link EmployeeListResponse} をbodyに設定したレスポンス
      */
-    @GetMapping()
+    @GetMapping("/get/")
     @Operation(summary = "社員情報一覧を取得する")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "社員一覧取得結果", content = @Content(
@@ -95,7 +95,7 @@ public class EmployeeController {
      * @param bindingResult バリデーションエラー情報を保持するIF
      * @return locationヘッダーを設定したResponseEntity
      */
-    @PostMapping()
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "社員情報を登録する")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -124,7 +124,7 @@ public class EmployeeController {
      * @param bindingResult バリデーションエラー情報を保持するIF
      * @return 更新した社員情報
      */
-    @PutMapping("{employeeId}")
+    @PutMapping("/save/{employeeId}")
     @Operation(summary = "社員情報を更新する")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
             content = @Content(schema = @Schema(implementation = EmployeeUpdateRequest.class))
@@ -150,7 +150,7 @@ public class EmployeeController {
      * @param employeeId 社員ID
      * @return ResponseEntity
      */
-    @DeleteMapping("{employeeId}")
+    @DeleteMapping("/delete/{employeeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "社員情報を削除する")
     @ApiResponses({
