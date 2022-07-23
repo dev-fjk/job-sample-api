@@ -48,7 +48,7 @@ public class Resume {
     /**
      * 誕生日
      */
-    private LocalDate birthDay;
+    private LocalDate birthday;
 
     /**
      * 都道府県コード

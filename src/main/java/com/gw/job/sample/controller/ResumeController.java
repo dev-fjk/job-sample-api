@@ -2,10 +2,10 @@ package com.gw.job.sample.controller;
 
 import com.gw.job.sample.config.OpenApiConstant;
 import com.gw.job.sample.entity.request.ResumeAddRequest;
-import com.gw.job.sample.entity.request.ResumeListQueryParameter;
 import com.gw.job.sample.entity.request.ResumeUpdateRequest;
 import com.gw.job.sample.entity.response.PostedResumeListResponse;
 import com.gw.job.sample.entity.response.ResumeResponse;
+import com.gw.job.sample.entity.selector.ResumeListSelector;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -56,18 +56,19 @@ public class ResumeController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "レジュメ情報を取得する")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "レジュメ取得結果 取得失敗時は空のJson Bodyを返す",
+            @ApiResponse(responseCode = "200", description = "レジュメ取得結果",
                     content = @Content(schema = @Schema(implementation = ResumeResponse.class),
                             mediaType = MediaType.APPLICATION_JSON_VALUE
                     )),
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
+            @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
     public ResponseEntity<?> getResume(@PathVariable("userId") @Min(1) long userId) {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/companies/{cid}")
+    @GetMapping("/companies/{companyId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "企業へ応募中のレジュメ一覧を取得する")
     @ApiResponses({
@@ -79,12 +80,12 @@ public class ResumeController {
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
     public ResponseEntity<PostedResumeListResponse> getPostedUserResumeList(
-            @PathVariable("cid") long cid,
-            @Validated @ModelAttribute ResumeListQueryParameter parameters) {
+            @PathVariable("companyId") long companyId,
+            @Validated @ModelAttribute ResumeListSelector parameters) {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/users/{userId}")
+    @PostMapping("/users/")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "レジュメ情報を登録する")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -93,20 +94,23 @@ public class ResumeController {
     @ApiResponses({
             @ApiResponse(responseCode = "201",
                     description = "レジュメ登録成功 作成したリソースへのURIをlocationヘッダーに設定して返す",
-                    headers = @Header(name = "location", required = true, description = "/resume/v1/users/1")
+                    headers = @Header(name = "location", description = "作成したレジュメ取得用のパス",
+                            required = true, schema = @Schema(type = "string", example = "/resume/v1/users/1"))
             ),
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
             @ApiResponse(responseCode = "409", ref = OpenApiConstant.CONFLICT),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> addResume(@PathVariable("userId") long userId, @RequestBody ResumeAddRequest request) {
+    public ResponseEntity<?> addResume(@RequestBody ResumeAddRequest request) {
+        long dummyUserId = 1L;
         return ResponseEntity.created(UriComponentsBuilder.newInstance().path("/resume/v1/users/{userId}")
-                .buildAndExpand(Map.of("userId", userId)).toUri()).build();
+                .buildAndExpand(Map.of("userId", dummyUserId)).toUri()).build();
     }
 
     @PutMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "レジュメ情報を更新する")
+    @Operation(summary = "レジュメ情報を更新する " +
+            "在籍企業と経験職種は ID未設定: 追加, 既存のIDを指定: 更新, 既存のID未設定: 削除となる")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
             content = @Content(schema = @Schema(implementation = ResumeUpdateRequest.class))
     )
