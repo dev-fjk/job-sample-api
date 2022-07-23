@@ -144,7 +144,7 @@ public class ResumeController {
     public ResponseEntity<?> updateResume(@PathVariable("userId") long userId,
                                           @Validated @RequestBody ResumeUpdateRequest request,
                                           BindingResult bindingResult) {
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     /**

@@ -14,11 +14,17 @@ public class ResumeResponse {
     @Schema(description = "ユーザーID", example = "1")
     private long userId;
 
-    @Schema(description = "苗字", example = "苗字")
+    @Schema(description = "苗字", example = "田中")
     private String lastName;
 
-    @Schema(description = "名前", example = "名前")
+    @Schema(description = "名前", example = "太郎")
     private String firstName;
+
+    @Schema(description = "苗字のフリガナ", example = "タナカ")
+    private String lastNameKana;
+
+    @Schema(description = "名前のフリガナ", example = "タロウ")
+    private String firstNameKana;
 
     @Schema(description = "生年月日 yyyy-MM-ddの形式", type = "string", example = "1990-10-10")
     private LocalDate birthday;
