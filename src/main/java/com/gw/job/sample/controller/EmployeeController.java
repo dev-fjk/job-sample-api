@@ -6,6 +6,7 @@ import com.gw.job.sample.entity.request.EmployeeUpdateRequest;
 import com.gw.job.sample.entity.response.EmployeeListResponse;
 import com.gw.job.sample.entity.response.EmployeeResponse;
 import com.gw.job.sample.entity.selector.EmployeeListSelector;
+import com.gw.job.sample.service.EmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -45,6 +46,8 @@ public class EmployeeController {
 
     public static final String BASE_PATH = "/employee/v1";
 
+    private final EmployeeService employeeService;
+
     /**
      * 社員情報を取得する
      *
@@ -63,7 +66,8 @@ public class EmployeeController {
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
     public ResponseEntity<EmployeeResponse> findOne(@PathVariable("employeeId") @Min(1) long employeeId) {
-        return ResponseEntity.ok().build();
+        var response = employeeService.findOne(employeeId);
+        return ResponseEntity.ok(response);
     }
 
     /**
