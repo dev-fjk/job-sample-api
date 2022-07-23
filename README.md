@@ -12,15 +12,19 @@
 | posted-company/v1/  | PostedCompanyController  | 企業への応募関連の操作を行う  |
 
 ## API仕様書(Swagger)
+
 アプリケーションをビルドした後に以下のURLにアクセスする
+
 - [ローカル(ビルドが必要)](http://localhost:8080/swagger-ui/index.html)
 
 ## DB定義
+
 - [DB設計](https://namugahaku.atlassian.net/l/cp/DA8wbXq6)
 
 ※confluenceのアカウントが必要
 
 DDLは以下
+
 - resources/h2/init.sql(h2)
 - docker/mysql/initdb.d/1_schema.sql(MySQL)
 
@@ -64,13 +68,9 @@ Docker推奨ですが、自前でMySQLを用意してもOKです。 その場合
 
 ## アプリケーションの実行
 
-spring.profiles.activeの値を使用したいDBに合わせて設定
+- デフォルトではMYSQLを指定して実行するようになっている
+- MYSQLの準備が面倒な場合は spring.profile.activeに h2と指定して実行する
 
-- MySQL使用時
-    - localプロファイル(デフォルト)
-- h2使用時
-    - h2プロファイル
-    
 ### プラグイン設定
 
 OR Mapperとして Searar Domaを使用するため以下のプラグインを導入することを推奨します。
@@ -79,32 +79,33 @@ OR Mapperとして Searar Domaを使用するため以下のプラグインを�
     - http://doma.seasar.org/extension/doma_tools.html
 - IntelliJ
     - https://plugins.jetbrains.com/plugin/7615-doma-support
-    
+
 ### 一部のアノテーションでコンパイルエラーが出る場合
+
 - Lombokというライブラリを使用して開発しているため、IDE側にLombokを認識させる設定が必要
 
 IDE名 Lombok導入 とGoogleで調べればいくらでも記事が出てくるので調べてみてください
 
 ### CheckStyle設定(任意)
+
 configパッケージ配下にcheckStyleを置いているので任意で使用する
 
 - [Checkstyle 使い方メモ](https://qiita.com/opengl-8080/items/cb4122a19269e8e683a4#ide-%E3%81%A7%E4%BD%BF%E7%94%A8%E3%81%99%E3%82%8B)
     - IDEで使用する の欄を参照
 
-
 ## コーディング規約
+
 - 基本的にService層以降もInterfaceは作成しない
     - ただし、環境別に実装を切り替えたいケースなどでは切っても良い
-    
-  
+
+
 - フラットパッケージ構成で作成する
     - 出来るだけパッケージの階層が深くならないようにパッケージを作成すること
-    
+
 
 - Responseの作成は Service層で行う
     - 個人的にはControllerでも良いと考えているがそういう分化
     - 全体的にプレゼンテーション層のロジックをServiceに寄せる傾向がある(入力チェックとか requestパラメータを別modelに変換するとか)
-
 
 
 - DI配下としたい共通クラスはcomponentsパッケージ配下に切る
@@ -124,7 +125,6 @@ configパッケージ配下にcheckStyleを置いているので任意で使用�
 - 出来るだけ簡潔な命名を心がけること
     - 例えばResumeServiceクラスでレジュメを1件取得するメソッドであれば findOne といった命名にする
     - ResumeServiceというクラス名の時点でResumeを取得することは明確に理解できるので findResume のような命名は避けること
-
 
 ## UT
 
