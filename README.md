@@ -10,6 +10,7 @@
 |----  |----   | ---   |
 | resume/v1/  | ResumeController  | 職務経歴情報の操作を行う  |
 | posted-company/v1/  | PostedCompanyController  | 企業への応募関連の操作を行う  |
+| employee/v1/  | EmployeeController  | 社員情報の操作を行う ※サンプル実装用  |
 
 ## API仕様書(Swagger)
 
@@ -21,7 +22,7 @@
 
 - [DB設計](https://namugahaku.atlassian.net/l/cp/DA8wbXq6)
 
-※confluenceのアカウントが必要
+※confluenceのアカウントと権限付与が必要なので連絡下さい
 
 DDLは以下
 
