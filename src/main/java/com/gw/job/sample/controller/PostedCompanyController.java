@@ -3,7 +3,6 @@ package com.gw.job.sample.controller;
 import com.gw.job.sample.config.OpenApiConstant;
 import com.gw.job.sample.entity.request.PostedUpdateRequest;
 import com.gw.job.sample.entity.response.PostedResponse;
-import com.gw.job.sample.entity.response.ResumeResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -39,58 +38,70 @@ public class PostedCompanyController {
 
     public static final String BASE_PATH = "/posted-company/v1/";
 
-    @GetMapping("/users/{userId}/companies/{cid}")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "企業へ応募しているか返す")
+    @GetMapping("/users/{userId}/companies/{companyId}")
+    @Operation(summary = "応募情報を取得する")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "企業へ応募済みのユーザーか返す",
+            @ApiResponse(responseCode = "200", description = "応募情報",
                     content = @Content(schema = @Schema(implementation = PostedResponse.class),
                             mediaType = MediaType.APPLICATION_JSON_VALUE
                     )),
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
+            @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<PostedResponse> isPostedUser(@PathVariable("userId") long userId, @PathVariable("cid") long cid) {
+    public ResponseEntity<PostedResponse> isPostedUser(@PathVariable("userId") long userId,
+                                                       @PathVariable("companyId") long companyId) {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/users/{userId}/companies/{cid}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PostMapping("/users/{userId}/companies/{companyId}")
     @Operation(summary = "企業へ応募する")
     @ApiResponses({
-            @ApiResponse(responseCode = "204", ref = OpenApiConstant.INSERTED_SUCCESS),
+            @ApiResponse(responseCode = "200", description = "登録した応募情報",
+                    content = @Content(schema = @Schema(implementation = PostedResponse.class),
+                            mediaType = MediaType.APPLICATION_JSON_VALUE
+                    )),
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
+            @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> postUser(@PathVariable("userId") long userId, @PathVariable("cid") long cid) {
+    public ResponseEntity<PostedResponse> postUser(@PathVariable("userId") long userId,
+                                                   @PathVariable("companyId") long companyId) {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("companies/{cid}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @Operation(summary = "企業がユーザーの採用状況を更新する")
+    @PutMapping("/users/{userId}/companies/{companyId}")
+    @Operation(summary = "応募情報を更新する")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
             content = @Content(schema = @Schema(implementation = PostedUpdateRequest.class))
     )
     @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "更新した応募情報",
+                    content = @Content(schema = @Schema(implementation = PostedResponse.class),
+                            mediaType = MediaType.APPLICATION_JSON_VALUE
+                    )),
             @ApiResponse(responseCode = "204", ref = OpenApiConstant.UPDATED_SUCCESS),
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
+            @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> updatePostUser(@PathVariable("cid") long cid, @Validated @RequestBody PostedUpdateRequest request) {
-        log.info("cid: {}, request : {}", cid, request);
+    public ResponseEntity<?> updatePostUser(@PathVariable("userId") long userId,
+                                            @PathVariable("companyId") long companyId,
+                                            @Validated @RequestBody PostedUpdateRequest request) {
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/users/{userId}/companies/{cid}")
+    @DeleteMapping("/users/{userId}/companies/{companyId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "ユーザーの応募情報を削除する")
     @ApiResponses({
             @ApiResponse(responseCode = "204", ref = OpenApiConstant.DELETED_SUCCESS),
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
+            @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> deletePosted(@PathVariable("userId") long userId, @PathVariable("cid") long cid) {
+    public ResponseEntity<?> deletePosted(@PathVariable("userId") long userId,
+                                          @PathVariable("companyId") long companyId) {
         return ResponseEntity.noContent().build();
     }
 }
