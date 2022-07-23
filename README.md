@@ -31,9 +31,11 @@
 ~~~
 
 ## DB定義
+- [DB設計](https://namugahaku.atlassian.net/l/cp/DA8wbXq6)
 
-以下に配置しているSQLを直接参照してください
+※confluenceのアカウントが必要かも
 
+DDLは以下
 - resources/h2/init.sql(h2)
 - docker/mysql/initdb.d/1_schema.sql(MySQL)
 
