@@ -1,11 +1,9 @@
 package com.gw.job.sample.entity.request;
 
-import com.gw.job.sample.entity.enums.SelectionStatus;
 import io.swagger.v3.oas.annotations.Hidden;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
 import javax.validation.constraints.AssertTrue;
@@ -45,19 +43,6 @@ public class ResumeListQueryParameter {
     @Parameter(description = "応募日時の絞り込み終了時刻 ISO8601拡張形式",
             schema = @Schema(type = "string"), example = "2022-04-30T23:59:59")
     private LocalDateTime postedDateTo;
-
-    /**
-     * SelectionStatusの値チェック
-     *
-     * @return trueの場合正常値
-     */
-    @Hidden
-    @AssertTrue(message = "0,1,2,9 か *を指定してください")
-    public boolean isValidSelectionStatus() {
-        return ALL.equals(this.selectionStatus) || Arrays.stream(SelectionStatus.values())
-                .map(SelectionStatus::getValue)
-                .anyMatch(v -> this.selectionStatus.equals(v));
-    }
 
     /**
      * postedDateFromとpostedDateToの前後関係をチェックする

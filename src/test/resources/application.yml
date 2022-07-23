@@ -7,16 +7,6 @@ spring:
   jackson:
     time-zone: "Asia/Tokyo"
 
-logging:
-  level:
-    root: info
-    web: debug
-    org.seasar.doma.jdbc.UtilLoggingJdbcLogger: debug
-    org.springframework.jdbc.datasource.init: debug
-
-doma:
-  dialect: h2
-
 ---
 spring:
   profiles:
