@@ -25,4 +25,15 @@ public class EmployeeRepository {
         var employee = employeeDao.findByEmployeeId(employeeId);
         return Optional.ofNullable(employee);
     }
+
+    /**
+     * 社員を追加する
+     *
+     * @param employee 登録する社員情報
+     * @return 登録した社員情報のID
+     */
+    public long insert(Employee employee) {
+        employeeDao.insert(employee);
+        return employee.getEmployeeId();
+    }
 }

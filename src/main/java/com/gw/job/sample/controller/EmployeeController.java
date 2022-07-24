@@ -1,5 +1,6 @@
 package com.gw.job.sample.controller;
 
+import com.gw.job.sample.components.BeanValidationErrorThrower;
 import com.gw.job.sample.config.OpenApiConstant;
 import com.gw.job.sample.entity.request.EmployeeAddRequest;
 import com.gw.job.sample.entity.request.EmployeeUpdateRequest;
@@ -45,8 +46,11 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class EmployeeController {
 
     public static final String BASE_PATH = "/employee/v1";
+    private static final String GET_EMPLOYEE_PATH = "/employee/v1/get/{employeeId}";
 
     private final EmployeeService employeeService;
+    private final BeanValidationErrorThrower errorThrower;
+
 
     /**
      * 社員情報を取得する
@@ -115,9 +119,11 @@ public class EmployeeController {
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
     public ResponseEntity<?> add(@Validated @RequestBody EmployeeAddRequest request, BindingResult bindingResult) {
-        long dummyId = 1L;
-        return ResponseEntity.created(UriComponentsBuilder.newInstance().path("/employee/v1/{employeeId}}")
-                .buildAndExpand(Map.of("employeeId", dummyId)).toUri()).build();
+        errorThrower.throwIfHasErrors(bindingResult);
+        var insertedId = employeeService.add(request);
+        var locationUri = UriComponentsBuilder.newInstance().path(GET_EMPLOYEE_PATH)
+                .uriVariables(Map.of("employeeId", insertedId)).build().toUri();
+        return ResponseEntity.created(locationUri).build();
     }
 
     /**
