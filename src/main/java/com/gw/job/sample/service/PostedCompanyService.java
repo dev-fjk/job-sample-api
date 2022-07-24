@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 import com.gw.job.sample.entity.response.PostedResponse;
 import com.gw.job.sample.exception.ResourceNotFoundException;
 import com.gw.job.sample.repository.PostedCompanyRepository;
-
 import lombok.RequiredArgsConstructor;
 
+/**
+ * 応募情報 サービス
+ */
 @Service
 @RequiredArgsConstructor
 public class PostedCompanyService {

@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import com.gw.job.sample.dao.PostedCompanyDao;
 import com.gw.job.sample.entity.doma.PostedCompany;
 
+/**
+ * 応募情報テーブル Repository
+ */
 @Repository
 @RequiredArgsConstructor
 public class PostedCompanyRepository {
