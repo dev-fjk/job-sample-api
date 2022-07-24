@@ -4,6 +4,7 @@ import com.gw.job.sample.dao.EmployeeDao;
 import com.gw.job.sample.entity.doma.Employee;
 import com.gw.job.sample.entity.result.EmployeeListResult;
 import com.gw.job.sample.entity.selector.EmployeeListSelector;
+import com.gw.job.sample.exception.RepositoryControlException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.seasar.doma.jdbc.SelectOptions;
@@ -30,6 +31,18 @@ public class EmployeeRepository {
     }
 
     /**
+     * 社員情報を取得した上で悲観ロックをかける
+     *
+     * @param employeeId 社員ID
+     * @return {@link Employee} 社員情報
+     */
+    public Optional<Employee> findOneForUpdate(long employeeId) {
+        var options = SelectOptions.get().forUpdate();
+        var employee = employeeDao.findWithOptions(employeeId, options);
+        return Optional.ofNullable(employee);
+    }
+
+    /**
      * 社員一覧を取得する
      *
      * @param selector 検索条件
@@ -44,6 +57,20 @@ public class EmployeeRepository {
                 .total(options.getCount())
                 .employees(employees)
                 .build();
+    }
+
+    /**
+     * 社員情報を更新し、更新したデータを返す
+     *
+     * @param employee 社員情報
+     * @return 更新済みの社員情報
+     */
+    public Employee update(Employee employee) {
+        int updateCount = employeeDao.update(employee);
+        if (updateCount != 1) {
+            throw new RepositoryControlException("データの更新に失敗しました");
+        }
+        return employeeDao.findByEmployeeId(employee.getEmployeeId());
     }
 
     /**

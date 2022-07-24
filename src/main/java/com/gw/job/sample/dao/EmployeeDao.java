@@ -7,6 +7,7 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Select;
+import org.seasar.doma.Update;
 import org.seasar.doma.boot.ConfigAutowireable;
 import org.seasar.doma.jdbc.SelectOptions;
 
@@ -16,11 +17,21 @@ public interface EmployeeDao {
 
     /***
      * 社員情報を取得する
+     *
      * @param employeeId 社員ID
      * @return 社員情報
      */
     @Select
     Employee findByEmployeeId(long employeeId);
+
+    /***
+     * 社員情報を検索オプション付きで取得する
+     *
+     * @param employeeId 社員ID
+     * @return 社員情報
+     */
+    @Select
+    Employee findWithOptions(long employeeId, SelectOptions options);
 
     /**
      * 従業員一覧を取得する
@@ -40,6 +51,15 @@ public interface EmployeeDao {
      */
     @Insert(excludeNull = true)
     int insert(Employee employee);
+
+    /**
+     * 社員を更新する
+     *
+     * @param employee 更新する社員情報
+     * @return 更新件数
+     */
+    @Update
+    int update(Employee employee);
 
     /**
      * 社員情報を削除する

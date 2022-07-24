@@ -51,7 +51,6 @@ public class EmployeeController {
     private final EmployeeService employeeService;
     private final BeanValidationErrorThrower errorThrower;
 
-
     /**
      * 社員情報を取得する
      *
@@ -151,9 +150,11 @@ public class EmployeeController {
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
     public ResponseEntity<EmployeeResponse> put(@PathVariable("employeeId") @Min(1) long employeeId,
-                                                @RequestBody EmployeeUpdateRequest request,
+                                                @Validated @RequestBody EmployeeUpdateRequest request,
                                                 BindingResult bindingResult) {
-        return ResponseEntity.ok().build();
+        errorThrower.throwIfHasErrors(bindingResult);
+        var response = employeeService.update(employeeId, request);
+        return ResponseEntity.ok(response);
     }
 
     /**

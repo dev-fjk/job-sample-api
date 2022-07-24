@@ -1,6 +1,8 @@
 package com.gw.job.sample.service;
 
+import com.gw.job.sample.EmployeeResponseConverter;
 import com.gw.job.sample.entity.request.EmployeeAddRequest;
+import com.gw.job.sample.entity.request.EmployeeUpdateRequest;
 import com.gw.job.sample.entity.response.EmployeeListResponse;
 import com.gw.job.sample.entity.response.EmployeeResponse;
 import com.gw.job.sample.entity.selector.EmployeeListSelector;
@@ -21,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final EmployeeResponseConverter employeeResponseConverter;
     private final EmployeeFactory employeeFactory;
 
     /**
@@ -32,19 +35,11 @@ public class EmployeeService {
      * @throws ResourceNotFoundException 社員情報が見つからない場合
      */
     public EmployeeResponse findOne(long employeeId) {
-
         var employee = employeeRepository.findOne(employeeId)
                 .orElseThrow(() -> {
                     throw new ResourceNotFoundException("社員情報が見つかりません");
                 });
-
-        return EmployeeResponse.builder()
-                .employeeId(employee.getEmployeeId())
-                .lastName(employee.getLastName())
-                .firstName(employee.getFirstName())
-                .entryDate(employee.getEntryDate())
-                .departmentCode(employee.getDepartmentCode().getValue())
-                .build();
+        return employeeResponseConverter.convert(employee);
     }
 
     /**
@@ -91,6 +86,28 @@ public class EmployeeService {
     public long add(EmployeeAddRequest addRequest) {
         var addEmployee = employeeFactory.createAddEmployee(addRequest);
         return employeeRepository.insert(addEmployee);
+    }
+
+    /**
+     * 社員情報を更新する
+     *
+     * @param employeeId    社員ID
+     * @param updateRequest 更新リクエスト
+     * @return 更新した社員情報
+     */
+    @Transactional(rollbackFor = Throwable.class)
+    public EmployeeResponse update(long employeeId, EmployeeUpdateRequest updateRequest) {
+
+        // 更新対象の社員に対してレコードロックをかける
+        // 1テーブルへの更新なので無理にロックする必要もあまりないが、 参考用に悲観ロックを行っている
+        employeeRepository.findOneForUpdate(employeeId)
+                .orElseThrow(() -> {
+                    throw new ResourceNotFoundException("社員情報が見つかりません");
+                });
+
+        var saveEmployee = employeeFactory.createUpdateEmployee(employeeId, updateRequest);
+        var updatedEmployee = employeeRepository.update(saveEmployee);
+        return employeeResponseConverter.convert(updatedEmployee);
     }
 
     /**
