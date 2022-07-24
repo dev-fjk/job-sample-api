@@ -2,7 +2,6 @@ package com.gw.job.sample.service;
 
 import org.springframework.stereotype.Service;
 
-import com.gw.job.sample.entity.enums.PostedStatus;
 import com.gw.job.sample.entity.response.PostedResponse;
 import com.gw.job.sample.exception.ResourceNotFoundException;
 import com.gw.job.sample.repository.PostedCompanyRepository;
@@ -32,7 +31,7 @@ public class PostedCompanyService {
         return PostedResponse.builder()
             .userId(postedCompany.getUserId())
             .companyId(postedCompany.getCompanyId())
-            .status(PostedStatus.of(postedCompany.getStatus()).getValue())
+            .status(postedCompany.getStatus().getValue())
             .entryDate(postedCompany.getEntryDate())
             .build();
     }
