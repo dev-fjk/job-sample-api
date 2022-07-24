@@ -56,4 +56,15 @@ public class EmployeeRepository {
         employeeDao.insert(employee);
         return employee.getEmployeeId();
     }
+
+    /**
+     * 社員を削除する
+     *
+     * @param employeeId 削除する社員の社員ID
+     * @return 削除に成功した場合true
+     */
+    public boolean deleteByEmployeeId(long employeeId) {
+        int deleteCount = employeeDao.deleteByEmployeeId(employeeId);
+        return deleteCount == 1;
+    }
 }

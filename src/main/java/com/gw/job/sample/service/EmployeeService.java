@@ -92,4 +92,18 @@ public class EmployeeService {
         var addEmployee = employeeFactory.createAddEmployee(addRequest);
         return employeeRepository.insert(addEmployee);
     }
+
+    /**
+     * 社員を削除する
+     *
+     * @param employeeId 社員ID
+     * @throws ResourceNotFoundException 削除対象が見つからない場合throw
+     */
+    @Transactional(rollbackFor = Throwable.class)
+    public void delete(long employeeId) {
+        boolean isDelete = employeeRepository.deleteByEmployeeId(employeeId);
+        if (!isDelete) {
+            throw new ResourceNotFoundException("従業員情報が見つかりません ID:" + employeeId);
+        }
+    }
 }
