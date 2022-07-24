@@ -4,6 +4,7 @@ import com.gw.job.sample.entity.doma.Employee;
 import com.gw.job.sample.entity.selector.EmployeeListSelector;
 import java.util.List;
 import org.seasar.doma.Dao;
+import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Select;
 import org.seasar.doma.boot.ConfigAutowireable;
@@ -39,4 +40,13 @@ public interface EmployeeDao {
      */
     @Insert(excludeNull = true)
     int insert(Employee employee);
+
+    /**
+     * 社員情報を削除する
+     *
+     * @param employeeId 社員ID
+     * @return 削除件数
+     */
+    @Delete(sqlFile = true)
+    int deleteByEmployeeId(long employeeId);
 }

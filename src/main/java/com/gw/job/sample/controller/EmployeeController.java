@@ -115,7 +115,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "201",
                     description = "社員登録成功 作成したリソースへのURIをlocationヘッダーに設定して返す",
                     headers = @Header(name = "location", description = "作成した社員情報取得用のパス",
-                            required = true, schema = @Schema(type = "string", example = "/employee/v1/1"))
+                            required = true, schema = @Schema(type = "string", example = "/employee/v1/get/1"))
             ),
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
@@ -150,7 +150,7 @@ public class EmployeeController {
             @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<EmployeeResponse> put(@PathVariable("employeeId") long employeeId,
+    public ResponseEntity<EmployeeResponse> put(@PathVariable("employeeId") @Min(1) long employeeId,
                                                 @RequestBody EmployeeUpdateRequest request,
                                                 BindingResult bindingResult) {
         return ResponseEntity.ok().build();
@@ -171,7 +171,8 @@ public class EmployeeController {
             @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> delete(@PathVariable("employeeId") long employeeId) {
+    public ResponseEntity<?> delete(@PathVariable("employeeId") @Min(1) long employeeId) {
+        employeeService.delete(employeeId);
         return ResponseEntity.noContent().build();
     }
 }
