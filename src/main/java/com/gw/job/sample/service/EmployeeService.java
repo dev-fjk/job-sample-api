@@ -1,6 +1,6 @@
 package com.gw.job.sample.service;
 
-import com.gw.job.sample.EmployeeResponseConverter;
+import com.gw.job.sample.converter.EmployeeResponseConverter;
 import com.gw.job.sample.entity.request.EmployeeAddRequest;
 import com.gw.job.sample.entity.request.EmployeeUpdateRequest;
 import com.gw.job.sample.entity.response.EmployeeListResponse;

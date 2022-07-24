@@ -1,4 +1,4 @@
-package com.gw.job.sample;
+package com.gw.job.sample.converter;
 
 import com.gw.job.sample.entity.doma.Employee;
 import com.gw.job.sample.entity.response.EmployeeResponse;
