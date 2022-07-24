@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.BindingResult;
 
 /**
- * BeanValidationErrorを
+ * BeanValidationErrorを {@link ValidationException} に変換した上で例外を投げるクラス
  */
 @Component
 public class BeanValidationErrorThrower {
