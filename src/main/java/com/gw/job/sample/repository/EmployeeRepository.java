@@ -30,7 +30,7 @@ public class EmployeeRepository {
      * 社員を追加する
      *
      * @param employee 登録する社員情報
-     * @return 登録した社員情報のID
+     * @return 登録した社員情報のID(Domaでinsertした場合 insertに使用したentityに 自動採番されたIDが設定される)
      */
     public long insert(Employee employee) {
         employeeDao.insert(employee);
