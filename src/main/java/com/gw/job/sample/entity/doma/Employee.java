@@ -39,6 +39,7 @@ public class Employee {
     /**
      * 入社日
      */
+    @Column(updatable = false)
     private LocalDate entryDate;
 
     /**
