@@ -60,6 +60,17 @@ public class EmployeeRepository {
     }
 
     /**
+     * 社員を追加する
+     *
+     * @param employee 登録する社員情報
+     * @return 登録した社員情報のID(Domaでinsertした場合 insertに使用したentityに 自動採番されたIDが設定される)
+     */
+    public long insert(Employee employee) {
+        employeeDao.insert(employee);
+        return employee.getEmployeeId();
+    }
+
+    /**
      * 社員情報を更新し、更新したデータを返す
      *
      * @param employee 社員情報
@@ -71,17 +82,6 @@ public class EmployeeRepository {
             throw new RepositoryControlException("データの更新に失敗しました");
         }
         return employeeDao.findByEmployeeId(employee.getEmployeeId());
-    }
-
-    /**
-     * 社員を追加する
-     *
-     * @param employee 登録する社員情報
-     * @return 登録した社員情報のID(Domaでinsertした場合 insertに使用したentityに 自動採番されたIDが設定される)
-     */
-    public long insert(Employee employee) {
-        employeeDao.insert(employee);
-        return employee.getEmployeeId();
     }
 
     /**
