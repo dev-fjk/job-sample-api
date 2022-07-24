@@ -93,7 +93,9 @@ public class EmployeeController {
     })
     public ResponseEntity<EmployeeListResponse> findAll(@Validated @ModelAttribute EmployeeListSelector selector,
                                                         BindingResult bindingResult) {
-        return ResponseEntity.ok().build();
+        errorThrower.throwIfHasErrors(bindingResult);
+        var response = employeeService.findAll(selector);
+        return ResponseEntity.ok(response);
     }
 
     /**
