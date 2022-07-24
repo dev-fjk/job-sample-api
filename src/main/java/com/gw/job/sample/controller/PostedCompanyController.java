@@ -3,6 +3,8 @@ package com.gw.job.sample.controller;
 import com.gw.job.sample.config.OpenApiConstant;
 import com.gw.job.sample.entity.request.PostedUpdateRequest;
 import com.gw.job.sample.entity.response.PostedResponse;
+import com.gw.job.sample.service.PostedCompanyService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -37,6 +39,8 @@ public class PostedCompanyController {
 
     public static final String BASE_PATH = "/posted-company/v1/";
 
+    private final PostedCompanyService postedCompanyService;
+
     /**
      * 応募情報を取得する
      *
@@ -57,7 +61,8 @@ public class PostedCompanyController {
     })
     public ResponseEntity<PostedResponse> isPostedUser(@PathVariable("userId") long userId,
                                                        @PathVariable("companyId") long companyId) {
-        return ResponseEntity.ok().build();
+        var response = postedCompanyService.findOne(userId, companyId);
+        return ResponseEntity.ok(response);
     }
 
     /**
