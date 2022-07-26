@@ -5,6 +5,7 @@ import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import com.gw.job.sample.dao.PostedCompanyDao;
 import com.gw.job.sample.entity.doma.PostedCompany;
+import com.gw.job.sample.exception.RepositoryControlException;
 
 /**
  * 応募情報テーブル Repository
@@ -22,7 +23,20 @@ public class PostedCompanyRepository {
      * @return {@link PostedCompany} 応募情報
      */
     public Optional<PostedCompany> findOne(long userId, long companyId) {
-        PostedCompany postedCompany = postedCompanyDao.findByUserIdAndCompanyId(userId, companyId);
+        var postedCompany = postedCompanyDao.findByUserIdAndCompanyId(userId, companyId);
         return Optional.ofNullable(postedCompany);
+    }
+
+    /**
+     * 応募情報を追加する
+     * @param postedCompany 追加する応募情報
+     * @return {@link PostedCompany} 応募情報
+     */
+    public PostedCompany insert(PostedCompany postedCompany) {
+        int insertCount = postedCompanyDao.insert(postedCompany);
+        if(insertCount <= 0) {
+            throw new RepositoryControlException("データの追加に失敗しました");
+        }
+        return postedCompany;
     }
 }
