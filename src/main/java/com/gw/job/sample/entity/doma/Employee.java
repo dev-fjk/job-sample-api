@@ -1,5 +1,6 @@
 package com.gw.job.sample.entity.doma;
 
+import com.gw.job.sample.entity.enums.DepartmentCode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class Employee {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long employeeId;
+    private Long employeeId;
 
     /**
      * 苗字
@@ -38,12 +39,13 @@ public class Employee {
     /**
      * 入社日
      */
+    @Column(updatable = false)
     private LocalDate entryDate;
 
     /**
      * 部署コード
      */
-    private int departmentCode;
+    private DepartmentCode departmentCode;
 
     /**
      * 作成日時

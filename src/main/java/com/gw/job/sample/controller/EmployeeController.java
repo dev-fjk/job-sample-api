@@ -1,5 +1,6 @@
 package com.gw.job.sample.controller;
 
+import com.gw.job.sample.components.BeanValidationErrorThrower;
 import com.gw.job.sample.config.OpenApiConstant;
 import com.gw.job.sample.entity.request.EmployeeAddRequest;
 import com.gw.job.sample.entity.request.EmployeeUpdateRequest;
@@ -45,8 +46,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class EmployeeController {
 
     public static final String BASE_PATH = "/employee/v1";
+    private static final String GET_EMPLOYEE_PATH = "/employee/v1/get/{employeeId}";
 
     private final EmployeeService employeeService;
+    private final BeanValidationErrorThrower errorThrower;
 
     /**
      * 社員情報を取得する
@@ -89,7 +92,9 @@ public class EmployeeController {
     })
     public ResponseEntity<EmployeeListResponse> findAll(@Validated @ModelAttribute EmployeeListSelector selector,
                                                         BindingResult bindingResult) {
-        return ResponseEntity.ok().build();
+        errorThrower.throwIfHasErrors(bindingResult);
+        var response = employeeService.findAll(selector);
+        return ResponseEntity.ok(response);
     }
 
     /**
@@ -109,15 +114,17 @@ public class EmployeeController {
             @ApiResponse(responseCode = "201",
                     description = "社員登録成功 作成したリソースへのURIをlocationヘッダーに設定して返す",
                     headers = @Header(name = "location", description = "作成した社員情報取得用のパス",
-                            required = true, schema = @Schema(type = "string", example = "/employee/v1/1"))
+                            required = true, schema = @Schema(type = "string", example = "/employee/v1/get/1"))
             ),
             @ApiResponse(responseCode = "400", ref = OpenApiConstant.BAD_REQUEST),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
     public ResponseEntity<?> add(@Validated @RequestBody EmployeeAddRequest request, BindingResult bindingResult) {
-        long dummyId = 1L;
-        return ResponseEntity.created(UriComponentsBuilder.newInstance().path("/employee/v1/{employeeId}}")
-                .buildAndExpand(Map.of("employeeId", dummyId)).toUri()).build();
+        errorThrower.throwIfHasErrors(bindingResult);
+        var insertedId = employeeService.add(request);
+        var locationUri = UriComponentsBuilder.newInstance().path(GET_EMPLOYEE_PATH)
+                .uriVariables(Map.of("employeeId", insertedId)).build().toUri();
+        return ResponseEntity.created(locationUri).build();
     }
 
     /**
@@ -142,10 +149,12 @@ public class EmployeeController {
             @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<EmployeeResponse> put(@PathVariable("employeeId") long employeeId,
-                                                @RequestBody EmployeeUpdateRequest request,
+    public ResponseEntity<EmployeeResponse> put(@PathVariable("employeeId") @Min(1) long employeeId,
+                                                @Validated @RequestBody EmployeeUpdateRequest request,
                                                 BindingResult bindingResult) {
-        return ResponseEntity.ok().build();
+        errorThrower.throwIfHasErrors(bindingResult);
+        var response = employeeService.update(employeeId, request);
+        return ResponseEntity.ok(response);
     }
 
     /**
@@ -163,7 +172,8 @@ public class EmployeeController {
             @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> delete(@PathVariable("employeeId") long employeeId) {
+    public ResponseEntity<?> delete(@PathVariable("employeeId") @Min(1) long employeeId) {
+        employeeService.delete(employeeId);
         return ResponseEntity.noContent().build();
     }
 }
