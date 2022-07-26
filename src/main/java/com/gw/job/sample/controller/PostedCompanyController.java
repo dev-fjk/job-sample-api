@@ -12,6 +12,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+
+import javax.validation.constraints.Min;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -59,8 +62,8 @@ public class PostedCompanyController {
             @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<PostedResponse> isPostedUser(@PathVariable("userId") long userId,
-                                                       @PathVariable("companyId") long companyId) {
+    public ResponseEntity<PostedResponse> isPostedUser(@PathVariable("userId") @Min(1) long userId,
+                                                       @PathVariable("companyId") @Min(1) long companyId) {
         var response = postedCompanyService.findOne(userId, companyId);
         return ResponseEntity.ok(response);
     }
@@ -84,8 +87,8 @@ public class PostedCompanyController {
             @ApiResponse(responseCode = "409", ref = OpenApiConstant.CONFLICT),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<PostedResponse> postUser(@PathVariable("userId") long userId,
-                                                   @PathVariable("companyId") long companyId) {
+    public ResponseEntity<PostedResponse> postUser(@PathVariable("userId") @Min(1) long userId,
+                                                   @PathVariable("companyId") @Min(1) long companyId) {
         return ResponseEntity.ok().build();
     }
 
@@ -114,8 +117,8 @@ public class PostedCompanyController {
             @ApiResponse(responseCode = "409", ref = OpenApiConstant.CONFLICT),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<PostedResponse> updatePostUser(@PathVariable("userId") long userId,
-                                                         @PathVariable("companyId") long companyId,
+    public ResponseEntity<PostedResponse> updatePostUser(@PathVariable("userId") @Min(1) long userId,
+                                                         @PathVariable("companyId") @Min(1) long companyId,
                                                          @Validated @RequestBody PostedUpdateRequest request,
                                                          BindingResult bindingResult) {
         return ResponseEntity.ok().build();
@@ -137,8 +140,8 @@ public class PostedCompanyController {
             @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> deletePosted(@PathVariable("userId") long userId,
-                                          @PathVariable("companyId") long companyId) {
+    public ResponseEntity<?> deletePosted(@PathVariable("userId") @Min(1) long userId,
+                                          @PathVariable("companyId") @Min(1) long companyId) {
         return ResponseEntity.noContent().build();
     }
 }

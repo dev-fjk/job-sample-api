@@ -31,7 +31,7 @@ public class PostedCompanyService {
         return PostedResponse.builder()
             .userId(postedCompany.getUserId())
             .companyId(postedCompany.getCompanyId())
-            .status(postedCompany.getStatus())
+            .status(postedCompany.getStatus().getValue())
             .entryDate(postedCompany.getEntryDate())
             .build();
     }
