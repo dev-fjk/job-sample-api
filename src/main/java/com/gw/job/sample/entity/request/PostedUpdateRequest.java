@@ -2,19 +2,16 @@ package com.gw.job.sample.entity.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.time.LocalDate;
+
+import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
+import javax.validation.constraints.Size;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.gw.job.sample.validation.constraint.PostedUpdateConstraint;
-import com.gw.job.sample.validation.group.PostedUpdateToAcceptedGroup;
-import com.gw.job.sample.validation.group.PostedUpdateToOtherStatusGroup;
-
 @Data
-@PostedUpdateConstraint
 @Schema(description = "応募状況更新リクエスト")
 public class PostedUpdateRequest {
 
@@ -24,8 +21,22 @@ public class PostedUpdateRequest {
     private Integer status;
 
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @NotNull(groups = PostedUpdateToAcceptedGroup.class)
-    @Null(groups = PostedUpdateToOtherStatusGroup.class)
     @Schema(description = "入社日 status:3の場合必須, status:3以外の場合は設定出来ない", example = "2022-07-15")
     private LocalDate entryDate;
+
+    @NotNull
+    @Size(max = 30)
+    @Schema(description = "更新者", example = "manual")
+    private String updatedBy;
+
+    @AssertTrue(message = "status:3の場合はentryDate必須、status:3以外の場合はentryDateは設定できません")
+    private boolean isValidStatusAndEntryDate() {
+        if(status == 3 && entryDate != null) {
+            return true;
+        }
+        if(status == 3 && entryDate == null) {
+            return false;
+        }
+        return entryDate == null;
+    }
 }
