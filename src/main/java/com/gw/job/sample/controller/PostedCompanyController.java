@@ -142,7 +142,10 @@ public class PostedCompanyController {
                                                          @PathVariable("companyId") @Min(1) long companyId,
                                                          @Validated @RequestBody PostedUpdateRequest request,
                                                          BindingResult bindingResult) {
-        return ResponseEntity.ok().build();
+        errorThrower.throwIfHasErrors(bindingResult);
+
+        var response = postedCompanyService.update(userId, companyId, request);
+        return ResponseEntity.ok(response);
     }
 
     /**

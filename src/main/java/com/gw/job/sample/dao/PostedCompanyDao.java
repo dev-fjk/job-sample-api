@@ -2,6 +2,7 @@ package com.gw.job.sample.dao;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
+import org.seasar.doma.Update;
 import org.seasar.doma.Insert;
 import org.seasar.doma.boot.ConfigAutowireable;
 
@@ -25,4 +26,10 @@ public interface PostedCompanyDao {
      */
     @Insert(excludeNull = true)
     int insert(PostedCompany postedCompany);
+
+    /**
+     * 応募情報を更新する
+     */
+    @Update
+    int update(PostedCompany postedCompany);
 }
