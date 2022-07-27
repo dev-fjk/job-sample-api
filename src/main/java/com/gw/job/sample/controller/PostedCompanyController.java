@@ -1,5 +1,6 @@
 package com.gw.job.sample.controller;
 
+import com.gw.job.sample.components.BeanValidationErrorThrower;
 import com.gw.job.sample.config.OpenApiConstant;
 import com.gw.job.sample.entity.request.PostedAddRequest;
 import com.gw.job.sample.entity.request.PostedUpdateRequest;
@@ -48,6 +49,7 @@ public class PostedCompanyController {
     private static final String GET_POSTED_COMPANY_PATH = BASE_PATH + "users/{userId}/companies/{companyId}";
 
     private final PostedCompanyService postedCompanyService;
+    private final BeanValidationErrorThrower errorThrower;
 
     /**
      * 応募情報を取得する
@@ -97,7 +99,10 @@ public class PostedCompanyController {
     })
     public ResponseEntity<PostedResponse> postUser(@PathVariable("userId") @Min(1) long userId,
                                                    @PathVariable("companyId") @Min(1) long companyId,
-                                                   @Validated @RequestBody PostedAddRequest request) {
+                                                   @Validated @RequestBody PostedAddRequest request,
+                                                   BindingResult bindingResult) {
+        errorThrower.throwIfHasErrors(bindingResult);
+        
         postedCompanyService.add(userId, companyId, request);
         var locationUri = UriComponentsBuilder.newInstance()
                         .path(GET_POSTED_COMPANY_PATH)
