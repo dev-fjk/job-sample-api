@@ -120,7 +120,7 @@ public class EmployeeService {
     public void delete(long employeeId) {
         boolean isDelete = employeeRepository.deleteByEmployeeId(employeeId);
         if (!isDelete) {
-            throw new ResourceNotFoundException("従業員情報が見つかりません ID:" + employeeId);
+            throw new ResourceNotFoundException("社員情報が見つかりません ID: " + employeeId);
         }
     }
 }

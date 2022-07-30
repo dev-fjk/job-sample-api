@@ -4,7 +4,7 @@ import com.gw.job.sample.dao.EmployeeDao
 import com.gw.job.sample.entity.doma.Employee
 import spock.lang.Specification
 
-class EmployeeRepositoryTest extends Specification {
+class EmployeeRepositorySpec extends Specification {
 
     EmployeeRepository target
 
