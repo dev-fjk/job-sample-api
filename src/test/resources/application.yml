@@ -7,6 +7,13 @@ spring:
   jackson:
     time-zone: "Asia/Tokyo"
 
+doma:
+  # 実際には接続しないがdialectはmysqlを指定
+  # mysql以外のRDBでサポートしていない機能(for update)など に対してdomaがエラーとするのを防ぐため
+  dialect: mysql
+  # camelCase -> snake_caseへの変換設定
+  naming: snake_lower_case
+
 ---
 spring:
   profiles:
