@@ -1,10 +1,11 @@
 package com.gw.job.sample.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.gw.job.sample.converter.PostedResponseConverter;
-import com.gw.job.sample.entity.request.PostedAddRequest;
 import com.gw.job.sample.entity.response.PostedResponse;
+import com.gw.job.sample.exception.RepositoryControlException;
 import com.gw.job.sample.exception.ResourceNotFoundException;
 import com.gw.job.sample.factory.PostedCompanyFactory;
 import com.gw.job.sample.repository.PostedCompanyRepository;
@@ -43,9 +44,18 @@ public class PostedCompanyService {
      * @param addRequest 応募情報追加リクエスト
      * @return 応募情報
      */
-    public PostedResponse add(long userId, long companyId, PostedAddRequest addRequest) {
-        var postedCompany = postedCompanyFactory.createAddPostedCompany(userId, companyId, addRequest);
-        postedCompanyRepository.insert(postedCompany);
+    @Transactional
+    public PostedResponse add(long userId, long companyId) {
+
+        // TODO: userIdでレジュメテーブルを検索しユーザ存在確認を行い、存在しなければResourceNotFoundExceptionを返す処理を追加する。
+        
+        var postedCompany = postedCompanyFactory.createAddPostedCompany(userId, companyId);
+        boolean insertResult = postedCompanyRepository.insert(postedCompany);
+        
+        if(!insertResult) {
+            throw new RepositoryControlException("データの追加に失敗しました");
+        }
+        
         return postedResponseConverter.convert(postedCompany);
     }
 }

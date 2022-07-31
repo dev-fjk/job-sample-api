@@ -22,6 +22,8 @@ public interface PostedCompanyDao {
 
     /**
      * 応募情報を追加する
+     * @param postedCompany 追加する応募情報
+     * @return 追加した応募情報の数
      */
     @Insert(excludeNull = true)
     int insert(PostedCompany postedCompany);
