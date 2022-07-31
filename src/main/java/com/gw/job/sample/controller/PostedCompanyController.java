@@ -1,8 +1,11 @@
 package com.gw.job.sample.controller;
 
+import com.gw.job.sample.components.BeanValidationErrorThrower;
 import com.gw.job.sample.config.OpenApiConstant;
 import com.gw.job.sample.entity.request.PostedUpdateRequest;
 import com.gw.job.sample.entity.response.PostedResponse;
+import com.gw.job.sample.service.PostedCompanyService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,6 +13,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+
+import javax.validation.constraints.Min;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +42,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostedCompanyController {
 
     public static final String BASE_PATH = "/posted-company/v1/";
+    private static final String POSTED_COMPANY_CRUD_PATH = "/users/{userId}/companies/{companyId}";
+    private static final String FULL_POSTED_COMPANY_CRUD_PATH = BASE_PATH + POSTED_COMPANY_CRUD_PATH;
+
+    private final PostedCompanyService postedCompanyService;
+    private final BeanValidationErrorThrower errorThrower;
 
     /**
      * 応募情報を取得する
@@ -44,7 +55,7 @@ public class PostedCompanyController {
      * @param companyId 企業ID
      * @return {@link PostedResponse} が設定されたResponseEntity
      */
-    @GetMapping("/users/{userId}/companies/{companyId}")
+    @GetMapping(POSTED_COMPANY_CRUD_PATH)
     @Operation(summary = "応募情報を取得する")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "応募情報",
@@ -55,9 +66,10 @@ public class PostedCompanyController {
             @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<PostedResponse> isPostedUser(@PathVariable("userId") long userId,
-                                                       @PathVariable("companyId") long companyId) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<PostedResponse> isPostedUser(@PathVariable("userId") @Min(1) long userId,
+                                                       @PathVariable("companyId") @Min(1) long companyId) {
+        var response = postedCompanyService.findOne(userId, companyId);
+        return ResponseEntity.ok(response);
     }
 
     /**
@@ -67,7 +79,7 @@ public class PostedCompanyController {
      * @param companyId 企業ID
      * @return {@link PostedResponse} 登録した応募情報がbodyに設定されたResponseEntity
      */
-    @PostMapping("/users/{userId}/companies/{companyId}")
+    @PostMapping(POSTED_COMPANY_CRUD_PATH)
     @Operation(summary = "企業へ応募する")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "登録した応募情報",
@@ -79,9 +91,10 @@ public class PostedCompanyController {
             @ApiResponse(responseCode = "409", ref = OpenApiConstant.CONFLICT),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<PostedResponse> postUser(@PathVariable("userId") long userId,
-                                                   @PathVariable("companyId") long companyId) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<PostedResponse> postUser(@PathVariable("userId") @Min(1) long userId,
+                                                   @PathVariable("companyId") @Min(1) long companyId) {
+        var response = postedCompanyService.add(userId, companyId);
+        return ResponseEntity.ok(response);
     }
 
     /**
@@ -93,7 +106,7 @@ public class PostedCompanyController {
      * @param bindingResult バリデーションエラー情報を保持したIF
      * @return {@link PostedResponse} 更新した応募情報をbodyに保持したResponseEntity
      */
-    @PutMapping("/users/{userId}/companies/{companyId}")
+    @PutMapping(POSTED_COMPANY_CRUD_PATH)
     @Operation(summary = "応募情報を更新する")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
             content = @Content(schema = @Schema(implementation = PostedUpdateRequest.class))
@@ -109,8 +122,8 @@ public class PostedCompanyController {
             @ApiResponse(responseCode = "409", ref = OpenApiConstant.CONFLICT),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<PostedResponse> updatePostUser(@PathVariable("userId") long userId,
-                                                         @PathVariable("companyId") long companyId,
+    public ResponseEntity<PostedResponse> updatePostUser(@PathVariable("userId") @Min(1) long userId,
+                                                         @PathVariable("companyId") @Min(1) long companyId,
                                                          @Validated @RequestBody PostedUpdateRequest request,
                                                          BindingResult bindingResult) {
         return ResponseEntity.ok().build();
@@ -123,7 +136,7 @@ public class PostedCompanyController {
      * @param companyId 企業ID
      * @return ResponseEntity
      */
-    @DeleteMapping("/users/{userId}/companies/{companyId}")
+    @DeleteMapping(POSTED_COMPANY_CRUD_PATH)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "ユーザーの応募情報を削除する")
     @ApiResponses({
@@ -132,8 +145,8 @@ public class PostedCompanyController {
             @ApiResponse(responseCode = "404", ref = OpenApiConstant.NOT_FOUND),
             @ApiResponse(responseCode = "500", ref = OpenApiConstant.INTERNAL_SERVER_ERROR),
     })
-    public ResponseEntity<?> deletePosted(@PathVariable("userId") long userId,
-                                          @PathVariable("companyId") long companyId) {
+    public ResponseEntity<?> deletePosted(@PathVariable("userId") @Min(1) long userId,
+                                          @PathVariable("companyId") @Min(1) long companyId) {
         return ResponseEntity.noContent().build();
     }
 }
