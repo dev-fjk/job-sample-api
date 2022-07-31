@@ -35,7 +35,7 @@ public enum DepartmentCode {
     ACCOUNTS(3),
 
     /**
-     * 英h刑部
+     * 営業部
      */
     SALES(4),
 
@@ -64,13 +64,13 @@ public enum DepartmentCode {
      */
     public static DepartmentCode of(Integer value) {
         if (value == null) {
-            throw new IllegalStateException("部門コードが設定されていません");
+            throw new IllegalArgumentException("部門コードが設定されていません");
         }
         return Stream.of(values())
                 .filter(v -> v.getValue().equals(value))
                 .findFirst()
                 .orElseThrow(() -> {
-                    throw new IllegalStateException("異常な部門コードが設定されています :" + value);
+                    throw new IllegalArgumentException("異常な部門コードが設定されています :" + value);
                 });
     }
 }

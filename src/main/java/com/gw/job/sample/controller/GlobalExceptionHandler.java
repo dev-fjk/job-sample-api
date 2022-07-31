@@ -101,7 +101,7 @@ public class GlobalExceptionHandler {
      * @return エラーレスポンス
      */
     @ExceptionHandler(ResourceAlreadyExistException.class)
-    public ResponseEntity<ProblemResponse> handleResourceNotFoundException(ResourceAlreadyExistException exception) {
+    public ResponseEntity<ProblemResponse> handleResourceAlreadyExistException(ResourceAlreadyExistException exception) {
         var body = ProblemResponse.builder()
                 .title("リソースが既に存在しています")
                 .status(HttpStatus.CONFLICT.value())
@@ -119,7 +119,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RepositoryControlException.class)
     public ResponseEntity<ProblemResponse> handleRepositoryControlException(RepositoryControlException exception) {
         var body = ProblemResponse.builder()
-                .title("データの更新で失敗しました")
+                .title("データの更新に失敗しました")
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .detail(exception.getMessage())
                 .build();
