@@ -5,6 +5,7 @@ import org.seasar.doma.Select;
 import org.seasar.doma.Update;
 import org.seasar.doma.Insert;
 import org.seasar.doma.boot.ConfigAutowireable;
+import org.seasar.doma.jdbc.SelectOptions;
 
 import com.gw.job.sample.entity.doma.PostedCompany;
 
@@ -20,6 +21,9 @@ public interface PostedCompanyDao {
      */
     @Select
     PostedCompany findByUserIdAndCompanyId(long userId, long companyId);
+
+    @Select
+    PostedCompany findByUserIdAndCompanyIdWithOptions(long userId, long companyId, SelectOptions options);
 
     /**
      * 応募情報を追加する

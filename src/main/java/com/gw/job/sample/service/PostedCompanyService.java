@@ -10,6 +10,7 @@ import com.gw.job.sample.exception.ResourceNotFoundException;
 import com.gw.job.sample.factory.PostedCompanyFactory;
 import com.gw.job.sample.repository.PostedCompanyRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 応募情報 サービス
@@ -57,8 +58,17 @@ public class PostedCompanyService {
      * @param updateRequest 応募情報更新リクエスト
      * @return {@link PostedResponse} 更新した応募情報
      */
+    @Transactional(rollbackFor = Throwable.class)
     public PostedResponse update(long userId, long companyId, PostedUpdateRequest updateRequest) {
+        
+        // リクエストされたIDを持つ応募情報の存在確認をし、悲観ロックをかける
+        postedCompanyRepository.findOneForUpdate(userId, companyId)
+            .orElseThrow(() -> {
+                throw new ResourceNotFoundException("応募情報が見つかりませんでした。");
+            });
+        
         var postedCompany = postedCompanyFactory.createUpdatePostedCompany(userId, companyId, updateRequest);
-        return postedResponseConverter.convert(postedCompany);
+        var updatedPostedCompany = postedCompanyRepository.update(postedCompany);
+        return postedResponseConverter.convert(updatedPostedCompany);
     }
 }
