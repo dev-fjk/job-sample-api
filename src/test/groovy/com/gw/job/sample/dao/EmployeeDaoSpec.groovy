@@ -1,5 +1,6 @@
 package com.gw.job.sample.dao
 
+import com.gw.job.sample.entity.selector.EmployeeListSelector
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
 import org.mockito.Mockito
@@ -16,6 +17,7 @@ import javax.sql.DataSource
 import java.sql.PreparedStatement
 import java.sql.ResultSet
 import java.sql.Statement
+import java.time.LocalDate
 
 import static org.mockito.ArgumentMatchers.eq
 
@@ -146,6 +148,79 @@ class EmployeeDaoSpec extends Specification {
         verifyPreparedStatement()
         capturedSql() == expectedSql
         capturedParams() == ["1"]
+    }
+
+    def "search 検索条件未設定"() {
+        given:
+        def selector = new EmployeeListSelector(
+                employeeIds: [],
+                departmentCodes: [],
+                entryDateFrom: null,
+                entryDateTo: null
+        )
+        def options = SelectOptions.get()
+        def expectedSql = """
+                          | ${CapturedSqlTemplate.EMPLOYEE_ALL_COLUMN}
+                          | FROM
+                          |    employee
+                          | ORDER BY
+                          |    employee_id
+                          """
+                .stripMargin()
+                .replaceAll(replaceRegex, " ")
+                .strip()
+
+        when:
+        target.search(selector, options)
+
+        then:
+        verifyPreparedStatement()
+        capturedSql() == expectedSql
+        capturedParams() == []
+    }
+
+    def "search 検索条件全設定"() {
+        given:
+        def selector = new EmployeeListSelector(
+                employeeIds: [1L, 2L],
+                departmentCodes: [3L, 4L],
+                entryDateFrom: LocalDate.of(2022, 7, 30),
+                entryDateTo: LocalDate.of(2022, 8, 1)
+
+        )
+        def options = SelectOptions.get().offset(0).limit(100)
+        def expectedSql = """
+                          | ${CapturedSqlTemplate.EMPLOYEE_ALL_COLUMN}
+                          | FROM
+                          |    employee
+                          | WHERE
+                          |    employee_id IN (?, ?)
+                          | AND
+                          |    department_code IN (?, ?)
+                          | AND
+                          |    entry_date >= ?
+                          | AND
+                          |    entry_date <= ?
+                          | ORDER BY
+                          |    employee_id
+                          | limit 0, 100
+                          """
+                .stripMargin()
+                .replaceAll(replaceRegex, " ")
+                .strip()
+
+        when:
+        target.search(selector, options)
+
+        then:
+        verifyPreparedStatement()
+        capturedSql() == expectedSql
+        capturedParams() == [
+                "1", "2",
+                "3", "4",
+                "2022-07-30",
+                "2022-08-01"
+        ]
     }
 
 
