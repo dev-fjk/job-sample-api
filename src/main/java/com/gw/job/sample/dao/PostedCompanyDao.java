@@ -23,12 +23,16 @@ public interface PostedCompanyDao {
 
     /**
      * 応募情報を追加する
+     * @param postedCompany 追加する応募情報
+     * @return 追加に成功したレコード数
      */
     @Insert(excludeNull = true)
     int insert(PostedCompany postedCompany);
 
     /**
      * 応募情報を更新する
+     * @param postedCompany 更新する応募情報
+     * @return 更新に成功したレコード数
      */
     @Update
     int update(PostedCompany postedCompany);

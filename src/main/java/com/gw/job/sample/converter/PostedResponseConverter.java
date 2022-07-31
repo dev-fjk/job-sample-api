@@ -5,7 +5,7 @@ import com.gw.job.sample.entity.response.PostedResponse;
 import org.springframework.stereotype.Component;
 
 /**
- * 社員レスポンスへ変換するconverter
+ * 応募情報レスポンスへ変換するconverter
  */
 @Component
 public class PostedResponseConverter {
