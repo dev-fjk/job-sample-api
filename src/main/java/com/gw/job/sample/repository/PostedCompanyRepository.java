@@ -2,11 +2,14 @@ package com.gw.job.sample.repository;
 
 import org.seasar.doma.jdbc.SelectOptions;
 import org.springframework.stereotype.Repository;
+import org.springframework.dao.DuplicateKeyException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import com.gw.job.sample.dao.PostedCompanyDao;
 import com.gw.job.sample.entity.doma.PostedCompany;
 import com.gw.job.sample.exception.RepositoryControlException;
+import com.gw.job.sample.exception.ResourceAlreadyExistException;
+
 
 /**
  * 応募情報テーブル Repository
@@ -43,14 +46,16 @@ public class PostedCompanyRepository {
     /**
      * 応募情報を追加する
      * @param postedCompany 追加する応募情報
-     * @return {@link PostedCompany} 応募情報
+     * @return 応募情報追加結果
      */
-    public PostedCompany insert(PostedCompany postedCompany) {
-        int insertCount = postedCompanyDao.insert(postedCompany);
-        if(insertCount <= 0) {
-            throw new RepositoryControlException("データの追加に失敗しました");
+    public boolean insert(PostedCompany postedCompany) {
+        try {
+            int insertCount = postedCompanyDao.insert(postedCompany);
+            return insertCount == 1;
+        } catch(DuplicateKeyException exception) {
+            // 409: conflictのエラーを返す
+            throw new ResourceAlreadyExistException("既に応募している企業です error: " + exception.getMessage());
         }
-        return postedCompany;
     }
     
     /**
