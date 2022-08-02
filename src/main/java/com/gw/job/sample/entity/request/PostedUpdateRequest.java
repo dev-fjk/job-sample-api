@@ -5,7 +5,6 @@ import java.time.LocalDate;
 
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Range;
@@ -23,11 +22,6 @@ public class PostedUpdateRequest {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Schema(description = "入社日 status:3の場合必須, status:3以外の場合は設定出来ない", example = "2022-07-15")
     private LocalDate entryDate;
-
-    @NotNull
-    @Size(max = 30)
-    @Schema(description = "更新者", example = "manual")
-    private String updatedBy;
 
     @AssertTrue(message = "status:3の場合はentryDate必須、status:3以外の場合はentryDateは設定できません")
     private boolean isValidStatusAndEntryDate() {

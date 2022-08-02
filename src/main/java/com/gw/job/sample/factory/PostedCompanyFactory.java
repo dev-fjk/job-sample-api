@@ -42,7 +42,7 @@ public class PostedCompanyFactory {
         postedCompany.setCompanyId(companyId);
         postedCompany.setStatus(PostedStatus.of(updateRequest.getStatus()));
         postedCompany.setEntryDate(updateRequest.getEntryDate());
-        postedCompany.setUpdatedBy(updateRequest.getUpdatedBy());
+        postedCompany.setUpdatedBy(String.valueOf(userId));
         return postedCompany;
     }
 }
