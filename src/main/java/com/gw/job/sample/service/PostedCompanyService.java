@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.gw.job.sample.converter.PostedResponseConverter;
 import com.gw.job.sample.entity.request.PostedUpdateRequest;
 import com.gw.job.sample.entity.response.PostedResponse;
-import com.gw.job.sample.exception.RepositoryControlException;
 import com.gw.job.sample.exception.ResourceNotFoundException;
 import com.gw.job.sample.factory.PostedCompanyFactory;
 import com.gw.job.sample.repository.PostedCompanyRepository;
@@ -51,13 +50,9 @@ public class PostedCompanyService {
         // TODO: userIdでレジュメテーブルを検索しユーザ存在確認を行い、存在しなければResourceNotFoundExceptionを返す処理を追加する。
         
         var postedCompany = postedCompanyFactory.createAddPostedCompany(userId, companyId);
-        boolean insertResult = postedCompanyRepository.insert(postedCompany);
+        var insertedPostedCompany = postedCompanyRepository.insert(postedCompany);
         
-        if(!insertResult) {
-            throw new RepositoryControlException("データの追加に失敗しました");
-        }
-        
-        return postedResponseConverter.convert(postedCompany);
+        return postedResponseConverter.convert(insertedPostedCompany);
     }
 
     /**
@@ -78,6 +73,7 @@ public class PostedCompanyService {
         
         var postedCompany = postedCompanyFactory.createUpdatePostedCompany(userId, companyId, updateRequest);
         var updatedPostedCompany = postedCompanyRepository.update(postedCompany);
+
         return postedResponseConverter.convert(updatedPostedCompany);
     }
 }

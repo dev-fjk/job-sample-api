@@ -46,12 +46,16 @@ public class PostedCompanyRepository {
     /**
      * 応募情報を追加する
      * @param postedCompany 追加する応募情報
-     * @return 応募情報追加結果
+     * @return {@link PostedCompany} 追加した応募情報
      */
-    public boolean insert(PostedCompany postedCompany) {
+    public PostedCompany insert(PostedCompany postedCompany) {
         try {
             int insertCount = postedCompanyDao.insert(postedCompany);
-            return insertCount == 1;
+            if(insertCount != 1) {
+                throw new RepositoryControlException("データの追加に失敗しました");
+            }
+
+            return postedCompanyDao.findByUserIdAndCompanyId(postedCompany.getUserId(), postedCompany.getCompanyId());
         } catch(DuplicateKeyException exception) {
             // 409: conflictのエラーを返す
             throw new ResourceAlreadyExistException("既に応募している企業です error: " + exception.getMessage());
@@ -61,13 +65,14 @@ public class PostedCompanyRepository {
     /**
      * 応募情報を更新する
      * @param postedCompany 更新する応募情報
-     * @return {@link PostedCompany} 応募情報
+     * @return {@link PostedCompany} 更新した応募情報
      */
     public PostedCompany update(PostedCompany postedCompany) {
         int updateCount = postedCompanyDao.update(postedCompany);
-        if(updateCount <= 0) {
+        if(updateCount != 1) {
             throw new RepositoryControlException("データの更新に失敗しました");
         }
+
         return postedCompanyDao.findByUserIdAndCompanyId(postedCompany.getUserId(), postedCompany.getCompanyId());
     }
 }
