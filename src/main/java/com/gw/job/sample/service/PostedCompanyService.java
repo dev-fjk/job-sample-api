@@ -44,7 +44,7 @@ public class PostedCompanyService {
      * @param addRequest 応募情報追加リクエスト
      * @return {@link PostedResponse} 追加した応募情報
      */
-    @Transactional
+    @Transactional(rollbackFor = Throwable.class)
     public PostedResponse add(long userId, long companyId) {
 
         // TODO: userIdでレジュメテーブルを検索しユーザ存在確認を行い、存在しなければResourceNotFoundExceptionを返す処理を追加する。

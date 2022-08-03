@@ -24,6 +24,7 @@ public class PostedCompanyFactory {
         postedCompany.setUserId(userId);
         postedCompany.setCompanyId(companyId);
         postedCompany.setStatus(PostedStatus.BEFORE_SELECTION);
+        // 応募するのはユーザ側のため、ユーザIDを作成者・更新者カラムに挿入
         postedCompany.setCreatedBy(String.valueOf(userId));
         postedCompany.setUpdatedBy(String.valueOf(userId));
         return postedCompany;
@@ -42,7 +43,8 @@ public class PostedCompanyFactory {
         postedCompany.setCompanyId(companyId);
         postedCompany.setStatus(PostedStatus.of(updateRequest.getStatus()));
         postedCompany.setEntryDate(updateRequest.getEntryDate());
-        postedCompany.setUpdatedBy(String.valueOf(userId));
+        // ステータス更新権限があるのは企業側という仕様のため、ユーザIDではなく企業IDを挿入
+        postedCompany.setUpdatedBy(String.valueOf(companyId));
         return postedCompany;
     }
 }
