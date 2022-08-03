@@ -2,8 +2,10 @@ package com.gw.job.sample.dao;
 
 import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
+import org.seasar.doma.Update;
 import org.seasar.doma.Insert;
 import org.seasar.doma.boot.ConfigAutowireable;
+import org.seasar.doma.jdbc.SelectOptions;
 
 import com.gw.job.sample.entity.doma.PostedCompany;
 
@@ -20,11 +22,22 @@ public interface PostedCompanyDao {
     @Select
     PostedCompany findByUserIdAndCompanyId(long userId, long companyId);
 
+    @Select
+    PostedCompany findByUserIdAndCompanyIdWithOptions(long userId, long companyId, SelectOptions options);
+
     /**
      * 応募情報を追加する
      * @param postedCompany 追加する応募情報
-     * @return 追加した応募情報の数
+     * @return 追加に成功したレコード数
      */
     @Insert(excludeNull = true)
     int insert(PostedCompany postedCompany);
+
+    /**
+     * 応募情報を更新する
+     * @param postedCompany 更新する応募情報
+     * @return 更新に成功したレコード数
+     */
+    @Update
+    int update(PostedCompany postedCompany);
 }
