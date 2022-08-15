@@ -4,6 +4,7 @@ import org.seasar.doma.Dao;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
 import org.seasar.doma.Insert;
+import org.seasar.doma.Delete;
 import org.seasar.doma.boot.ConfigAutowireable;
 import org.seasar.doma.jdbc.SelectOptions;
 
@@ -40,4 +41,13 @@ public interface PostedCompanyDao {
      */
     @Update
     int update(PostedCompany postedCompany);
+
+    /**
+     * 応募情報を削除する
+     * @param userId ユーザID
+     * @param companyId 企業ID
+     * @return 削除に成功したレコード数
+     */
+    @Delete(sqlFile = true)
+    int deleteByUserIdAndCompanyId(long userId, long companyId);
 }

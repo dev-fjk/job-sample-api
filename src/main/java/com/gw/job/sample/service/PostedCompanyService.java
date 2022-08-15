@@ -76,4 +76,17 @@ public class PostedCompanyService {
 
         return postedResponseConverter.convert(updatedPostedCompany);
     }
+
+    /**
+     * 応募情報を削除する
+     * @param userId ユーザID
+     * @param companyId 企業ID
+     */
+    @Transactional(rollbackFor = Throwable.class)
+    public void delete(long userId, long companyId) {
+        boolean isDelete = postedCompanyRepository.delete(userId, companyId);
+        if(!isDelete) {
+            throw new ResourceNotFoundException("応募情報が見つかりません。 userId: " + userId + "、companyId: " + companyId);
+        }
+    }
 }

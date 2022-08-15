@@ -43,7 +43,6 @@ public class PostedCompanyController {
 
     public static final String BASE_PATH = "/posted-company/v1/";
     private static final String POSTED_COMPANY_CRUD_PATH = "/users/{userId}/companies/{companyId}";
-    private static final String FULL_POSTED_COMPANY_CRUD_PATH = BASE_PATH + POSTED_COMPANY_CRUD_PATH;
 
     private final PostedCompanyService postedCompanyService;
     private final BeanValidationErrorThrower errorThrower;
@@ -150,6 +149,7 @@ public class PostedCompanyController {
     })
     public ResponseEntity<?> deletePosted(@PathVariable("userId") @Min(1) long userId,
                                           @PathVariable("companyId") @Min(1) long companyId) {
+        postedCompanyService.delete(userId, companyId);
         return ResponseEntity.noContent().build();
     }
 }
