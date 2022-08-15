@@ -82,6 +82,7 @@ public class PostedCompanyService {
      * @param userId ユーザID
      * @param companyId 企業ID
      */
+    @Transactional(rollbackFor = Throwable.class)
     public void delete(long userId, long companyId) {
         boolean isDelete = postedCompanyRepository.delete(userId, companyId);
         if(!isDelete) {
