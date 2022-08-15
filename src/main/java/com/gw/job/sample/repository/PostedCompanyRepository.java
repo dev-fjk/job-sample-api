@@ -75,4 +75,15 @@ public class PostedCompanyRepository {
 
         return postedCompanyDao.findByUserIdAndCompanyId(postedCompany.getUserId(), postedCompany.getCompanyId());
     }
+
+    /**
+     * 応募情報を削除する
+     * @param userId ユーザID
+     * @param companyId 企業ID
+     * @return 削除結果(true: 削除成功、false: 削除対象が見つからない)
+     */
+    public boolean delete(long userId, long companyId) {
+        int deleteCount = postedCompanyDao.deleteByUserIdAndCompanyId(userId, companyId);
+        return deleteCount == 1;
+    }
 }
