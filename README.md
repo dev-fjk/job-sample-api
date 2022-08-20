@@ -45,9 +45,9 @@ ex) feature/dev-fjk/add-resume
 
 - JDK 11
 - Groovy 3.0
-- IDE(Eclipse or Intellij Ultimate Edition)
+- IDE(Eclipse or Intellij Ultimate Edition or VSCodeなどの開発用エディタ)
 - Docker Desktop(任意)
-- Maven(Eclipseの場合自前で用意必要かも・・？)
+- Maven(Intellij以外は自前で準備必要かも)
 
 練習も兼ねてIntellij Ultimate Editionの使用を推奨します<br>
 1ヶ月は無料 & JDKやmavenはIDE上からインストール可能であるため環境構築が楽です
@@ -98,7 +98,8 @@ configパッケージ配下にcheckStyleを置いているので任意で使用�
 
 - 基本的にService層以降もInterfaceは作成しない
     - ただし、環境別に実装を切り替えたいケースなどでは切っても良い
-
+    - 個人的にはIF用意する方が好きだが文化に合わせる
+    
 
 - フラットパッケージ構成で作成する
     - 出来るだけパッケージの階層が深くならないようにパッケージを作成すること
@@ -129,14 +130,14 @@ configパッケージ配下にcheckStyleを置いているので任意で使用�
 
 ## UT
 
-groovyのテスティングフレームワークである Spock Frameworkを使用しています。<br>
+サンプル実装はgroovyのテスティングフレームワークである Spock Frameworkを使用しています。<br>
 Junit5も使用できる環境を整えているので好みのテストツールを使用してください。<br>
 ※ 特にこだわりが無ければSpockを推奨します。
 
 ### テストクラスの命名規則
 - Junit5
     - ~Test.java
-- Spock(以下のどちらか)
+- Spock
     - ~Spec.groovy 
     
 ### Spockの参考用サイト
