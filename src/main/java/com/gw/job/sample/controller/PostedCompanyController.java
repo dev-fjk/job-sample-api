@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 応募状況の操作を行うコントローラー
  */
+@Slf4j
 @Validated
 @RestController
 @RequestMapping(path = PostedCompanyController.BASE_PATH)
@@ -57,7 +60,8 @@ public class PostedCompanyController {
     })
     public ResponseEntity<PostedResponse> isPostedUser(@PathVariable("userId") long userId,
                                                        @PathVariable("companyId") long companyId) {
-        return ResponseEntity.ok().build();
+    	log.info("userId:{},companyId:{}", userId, companyId);
+    	return ResponseEntity.ok().build();
     }
 
     /**
