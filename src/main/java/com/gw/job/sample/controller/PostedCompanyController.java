@@ -2,7 +2,10 @@ package com.gw.job.sample.controller;
 
 import com.gw.job.sample.config.OpenApiConstant;
 import com.gw.job.sample.entity.request.PostedUpdateRequest;
+import com.gw.job.sample.entity.response.EmployeeResponse;
 import com.gw.job.sample.entity.response.PostedResponse;
+import com.gw.job.sample.service.PostedCompanyService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,8 +13,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.var;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.validation.constraints.Min;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,15 +41,16 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequestMapping(path = PostedCompanyController.BASE_PATH)
-@RequiredArgsConstructor
 @Tag(name = PostedCompanyController.BASE_PATH, description = "応募情報管理用API")
 public class PostedCompanyController {
 
     public static final String BASE_PATH = "/posted-company/v1/";
-
+    
+    @Autowired
+    private PostedCompanyService postedCompanyService;
+    
     /**
      * 応募情報を取得する
-     *
      * @param userId    ユーザーID
      * @param companyId 企業ID
      * @return {@link PostedResponse} が設定されたResponseEntity
@@ -61,9 +69,10 @@ public class PostedCompanyController {
     public ResponseEntity<PostedResponse> isPostedUser(@PathVariable("userId") long userId,
                                                        @PathVariable("companyId") long companyId) {
     	log.info("userId:{},companyId:{}", userId, companyId);
-    	return ResponseEntity.ok().build();
+    	PostedResponse response = postedCompanyService.findOne(userId, companyId);
+    	return ResponseEntity.ok(response);
     }
-
+    
     /**
      * 企業へ応募する
      *
