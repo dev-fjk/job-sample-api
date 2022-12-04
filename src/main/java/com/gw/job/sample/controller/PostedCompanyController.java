@@ -2,7 +2,6 @@ package com.gw.job.sample.controller;
 
 import com.gw.job.sample.config.OpenApiConstant;
 import com.gw.job.sample.entity.request.PostedUpdateRequest;
-import com.gw.job.sample.entity.response.EmployeeResponse;
 import com.gw.job.sample.entity.response.PostedResponse;
 import com.gw.job.sample.service.PostedCompanyService;
 
@@ -12,11 +11,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.var;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.validation.constraints.Min;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -69,7 +65,7 @@ public class PostedCompanyController {
     public ResponseEntity<PostedResponse> isPostedUser(@PathVariable("userId") long userId,
                                                        @PathVariable("companyId") long companyId) {
     	log.info("userId:{},companyId:{}", userId, companyId);
-    	PostedResponse response = postedCompanyService.findOne(userId, companyId);
+    	var response = postedCompanyService.findOne(userId, companyId);
     	return ResponseEntity.ok(response);
     }
     
