@@ -1,5 +1,6 @@
 package com.gw.job.sample.controller;
 
+import com.gw.job.sample.components.BeanValidationErrorThrower;
 import com.gw.job.sample.config.OpenApiConstant;
 import com.gw.job.sample.entity.request.PostedUpdateRequest;
 import com.gw.job.sample.entity.response.PostedResponse;
@@ -11,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -37,10 +39,12 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @RestController
 @RequestMapping(path = PostedCompanyController.BASE_PATH)
+@RequiredArgsConstructor
 @Tag(name = PostedCompanyController.BASE_PATH, description = "応募情報管理用API")
 public class PostedCompanyController {
 
     public static final String BASE_PATH = "/posted-company/v1/";
+    public final BeanValidationErrorThrower errorThrower;
     
     @Autowired
     private PostedCompanyService postedCompanyService;
@@ -124,7 +128,9 @@ public class PostedCompanyController {
                                                          @PathVariable("companyId") long companyId,
                                                          @Validated @RequestBody PostedUpdateRequest request,
                                                          BindingResult bindingResult) {
-        return ResponseEntity.ok().build();
+        errorThrower.throwIfHasErrors(bindingResult);
+        var response = postedCompanyService.update(userId,companyId,request);
+    	return ResponseEntity.ok(response);
     }
 
     /**
