@@ -16,22 +16,22 @@ import java.util.stream.Stream;
 public enum PostedCompanyStatus {
 
 	/**
-	 * 役員
+	 * 選考前
 	 */
 	BEFORE_SELECTION(1),
 
 	/**
-	 * 総務部
+	 * 選考中
 	 */
 	SELECTION(2),
 
 	/**
-	 * 経理部
+	 * 採用
 	 */
 	ADOPTED(3),
 
 	/**
-	 * 営業部
+	 * 不採用
 	 */
 	NOT＿ADOPTE(4);
 
