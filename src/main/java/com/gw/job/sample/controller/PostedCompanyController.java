@@ -47,6 +47,7 @@ public class PostedCompanyController {
     
     /**
      * 応募情報を取得する
+     * 
      * @param userId    ユーザーID
      * @param companyId 企業ID
      * @return {@link PostedResponse} が設定されたResponseEntity
@@ -90,7 +91,8 @@ public class PostedCompanyController {
     })
     public ResponseEntity<PostedResponse> postUser(@PathVariable("userId") long userId,
                                                    @PathVariable("companyId") long companyId) {
-        return ResponseEntity.ok().build();
+        var response = postedCompanyService.add(userId,companyId);
+    	return ResponseEntity.ok(response);
     }
 
     /**

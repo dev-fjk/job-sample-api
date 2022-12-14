@@ -21,7 +21,7 @@ public class PostedResponseConverter {
 		return PostedResponse.builder()
 				.companyId(postedCompany.getCompanyId())
 				.userId(postedCompany.getUserId())
-				.status(postedCompany.getStatus())
+				.status(postedCompany.getStatus().getValue())
 				.entryDate(postedCompany.getEntryDate())
 				.build();
 	}

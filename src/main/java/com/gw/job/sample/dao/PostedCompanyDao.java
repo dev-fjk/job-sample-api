@@ -1,6 +1,7 @@
 package com.gw.job.sample.dao;
 
 import org.seasar.doma.Dao;
+import org.seasar.doma.Insert;
 import org.seasar.doma.Select;
 import org.seasar.doma.boot.ConfigAutowireable;
 
@@ -13,12 +14,22 @@ public interface PostedCompanyDao {
 
     /**
      * 応募情報を取得する
+     * 
      * @param userId    ユーザーID
      * @param companyId 企業ID
      * @return {@link PostedResponse} が設定されたResponseEntity
      */
-	
     @Select
     PostedCompany findByUserIdAndCompanyId(long userId, long companyId);
+    
+    /**
+     * 応募情報を追加する
+     * 
+     * @param userId    ユーザーID
+     * @param companyId 企業ID
+     * @return 追加件数
+     */
+    @Insert(excludeNull = true)
+    int insert(PostedCompany postedCompany);
 
 }

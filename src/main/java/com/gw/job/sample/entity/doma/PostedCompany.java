@@ -8,6 +8,8 @@ import org.seasar.doma.Entity;
 import org.seasar.doma.Id;
 import org.seasar.doma.Table;
 
+import com.gw.job.sample.entity.enums.PostedCompanyStatus;
+
 /**
  * DB 応募企業テーブル Entity
  */
@@ -31,7 +33,7 @@ public class PostedCompany {
     /**
      * 選考状況
      */
-    private int status;
+    private PostedCompanyStatus status;
 
     /**
      * 入社日

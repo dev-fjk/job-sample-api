@@ -1,22 +1,18 @@
 package com.gw.job.sample.service;
 
 
-import java.time.LocalDate;
-import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.gw.job.sample.converter.EmployeeResponseConverter;
 import com.gw.job.sample.converter.PostedResponseConverter;
-import com.gw.job.sample.entity.doma.PostedCompany;
 import com.gw.job.sample.entity.response.PostedResponse;
 import com.gw.job.sample.exception.ResourceNotFoundException;
-import com.gw.job.sample.factory.EmployeeFactory;
-import com.gw.job.sample.repository.EmployeeRepository;
+import com.gw.job.sample.factory.PostedCompanyFactory;
 import com.gw.job.sample.repository.PostedCompanyRepository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.var;
 
 /**
  * 応募情報を取得するServiceクラス
@@ -28,9 +24,11 @@ public class PostedCompanyService {
 
 	private final PostedCompanyRepository postedCompanyRepository;
 	private final PostedResponseConverter postedResponseConverter;
+	private final PostedCompanyFactory postedCompanyFactory;
 	
     /**
      * 応募情報を取得する
+     * 
      * @param userId 	ユーザID
      * @param companyId 企業ID
      * @return {@link PostedResponse} 応募情報
@@ -44,7 +42,20 @@ public class PostedCompanyService {
         return postedResponseConverter.convert(postedCompany);
     }
     
-    
+    /**
+     * 応募情報を追加する
+     * 
+     * @param userId 	ユーザID
+     * @param companyId 企業ID
+     * @return {@link PostedResponse} 応募情報
+     */
+    @Transactional(rollbackFor = Throwable.class)
+    public PostedResponse add(long userId, long companyId) {
+    	var addPostedCompany = postedCompanyFactory.createAddPostedCompany(userId, companyId);
+		var response = postedCompanyRepository.insert(addPostedCompany);
+		
+		return postedResponseConverter.convert(response);
+    }
     
     
 
