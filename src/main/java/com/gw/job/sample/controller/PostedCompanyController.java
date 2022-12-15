@@ -151,6 +151,7 @@ public class PostedCompanyController {
     })
     public ResponseEntity<?> deletePosted(@PathVariable("userId") long userId,
                                           @PathVariable("companyId") long companyId) {
+    	postedCompanyService.delete(userId, companyId);
         return ResponseEntity.noContent().build();
     }
 }

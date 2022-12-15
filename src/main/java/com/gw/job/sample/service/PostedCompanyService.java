@@ -83,6 +83,21 @@ public class PostedCompanyService {
         // 1テーブルへの更新なので無理にロックする必要もあまりないが、 参考用に悲観ロックを行っている
 
     }
+    
+    /**
+     * 応募情報を削除する
+     *
+     * @param userId    ユーザID
+     * @param companyId 企業ID
+     * @throws ResourceNotFoundException 削除対象が見つからない場合throw
+     */
+    @Transactional(rollbackFor = Throwable.class)
+    public void delete(long userId, long companyId) {
+    	boolean isDelete = postedCompanyRepository.deleteByUserIdAndCompanyId(userId, companyId);
+    	if (!isDelete) {
+    		throw new ResourceNotFoundException("応募情報が見つかりません　ID: " + userId + companyId);
+    	}
+    }
 
     
 

@@ -1,6 +1,7 @@
 package com.gw.job.sample.dao;
 
 import org.seasar.doma.Dao;
+import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
 import org.seasar.doma.Select;
 import org.seasar.doma.Update;
@@ -37,7 +38,7 @@ public interface PostedCompanyDao {
     /***
      * 応募情報を検索オプション付きで取得する
      *
-     * @param employeeId 社員ID
+     * @param userId    ユーザーID
      * @param companyId 企業ID
      * @return 応募情報
      */
@@ -47,9 +48,21 @@ public interface PostedCompanyDao {
     /**
      * 応募情報を更新する
      *
+     * @param userId    ユーザーID
+     * @param companyId 企業ID
      * @param postedCompany 更新する応募情報
      * @return 更新件数
      */
     @Update
     int update(PostedCompany postedCompany);
+    
+    /**
+     * 応募情報を削除する
+     *
+     * @param userId    ユーザーID
+     * @param companyId 企業ID
+     * @return 削除件数
+     */
+    @Delete(sqlFile = true)
+    int deleteByUserIdAndCompanyId(long userId, long companyId);
 }

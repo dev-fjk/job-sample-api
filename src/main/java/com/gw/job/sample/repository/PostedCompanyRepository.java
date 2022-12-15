@@ -68,12 +68,31 @@ public class PostedCompanyRepository {
 		return Optional.ofNullable(postedCompany);
 	}
 	
+    /**
+     * 応募情報を更新し、更新したデータを返す
+     *
+	 * @param userId    ユーザーID
+	 * @param companyId 企業ID
+     * @return 更新済みの応募情報
+     */
 	public PostedCompany update(PostedCompany postedCompany) {
 		int updateCount = postedCompanyDao.update(postedCompany);
 		if (updateCount != 1) {
 			throw new RepositoryControlException("データの更新に失敗しました");
 		}
-		return postedCompanyDao.findByUserIdAndCompanyId(postedCompany.getCompanyId(), postedCompany.getCompanyId());
+		return postedCompanyDao.findByUserIdAndCompanyId(postedCompany.getCompanyId(), postedCompany.getCompanyId());	
+	}
+	
+    /**
+     * 応募情報を削除する
+     *
+	 * @param userId    ユーザーID
+	 * @param companyId 企業ID
+     * @return 削除に成功した場合true
+     */
+	public boolean deleteByUserIdAndCompanyId(long userId, long companyId) {
+		int deleteCount = postedCompanyDao.deleteByUserIdAndCompanyId(userId, companyId);
+		return deleteCount == 1;
 		
 	}
 }
