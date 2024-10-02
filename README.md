@@ -38,7 +38,7 @@ ex) feature/dev-fjk/add-resume
 
 以下のツールを準備してください
 
-- JDK 11
+- JDK 17
 - Groovy 3.0
 - IDE(Eclipse or Intellij Ultimate Edition or VSCodeなどの開発用エディタ)
 - Docker Desktop(任意)
