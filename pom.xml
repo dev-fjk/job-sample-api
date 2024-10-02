@@ -7,6 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
+        <!-- FIXME(dev-fjk): support終了のためboot3系まであげるべきだが、デプロイしない個人リポジトリであるため放置・・・ -->
         <version>2.7.1</version>
         <relativePath/>
     </parent>
@@ -18,7 +19,7 @@
     <description>job project sample api</description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <groovy.version>3.0.11</groovy.version>
         <spock.version>2.1-groovy-3.0</spock.version>
         <swagger.version>3.0.0</swagger.version>

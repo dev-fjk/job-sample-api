@@ -19,11 +19,6 @@
 - [ローカル(ビルドが必要)](http://localhost:8080/swagger-ui/index.html)
 
 ## DB定義
-
-- [DB設計](https://namugahaku.atlassian.net/l/cp/DA8wbXq6)
-
-※confluenceのアカウントと権限付与が必要なので連絡下さい
-
 DDLは以下
 
 - resources/h2/init.sql(h2)
